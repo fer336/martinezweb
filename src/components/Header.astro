@@ -2,6 +2,7 @@
 import site from '../data/site.json';
 import WaIcon from './WaIcon.astro';
 import InstagramIcon from './InstagramIcon.astro';
+import { withBase } from '../lib/url.js';
 const wa = `https://wa.me/${site.whatsapp}?text=Hola,%20quiero%20consultar%20por%20un%20service%20de%20bomba`;
 const p = Astro.url.pathname;
 const nav = [
@@ -17,10 +18,10 @@ const nav = [
   <div class="wrap header-bar">
     <input type="checkbox" id="nav-toggle" class="nav-toggle-input">
     <label for="nav-toggle" class="nav-toggle" aria-label="Abrir menú"><span></span><span></span><span></span></label>
-    <a href="/" class="header-logo"><img src="/assets/logo_vectorizado.svg" alt={site.name}></a>
+    <a href={withBase('/')} class="header-logo"><img src={withBase('/assets/logo_vectorizado.svg')} alt={site.name}></a>
     <nav class="header-nav">
       {nav.map(n => (
-        <a href={n.href} class:list={['header-link', { active: p === n.href }]}>{n.label}</a>
+        <a href={withBase(n.href)} class:list={['header-link', { active: p === withBase(n.href) }]}>{n.label}</a>
       ))}
       <div class="header-actions">
         <a href={wa} target="_blank" rel="noopener" class="btn btn-primary"><WaIcon size={16} />WhatsApp</a>

@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FinalCta from '../components/FinalCta.astro';
 import trabajos from '../data/trabajos.json';
+import { withBase } from '../lib/url.js';
 ---
 <BaseLayout
   title="Trabajos realizados · Martínez Gas-Plomería Pinamar"
@@ -22,12 +23,12 @@ import trabajos from '../data/trabajos.json';
           <div class="work-card">
             {t.antes && t.despues ? (
               <div class="work-photos">
-                <figure class="work-photo"><img src={t.antes} alt={`Antes: ${t.titulo}`} loading="lazy"><figcaption>ANTES</figcaption></figure>
-                <figure class="work-photo"><img src={t.despues} alt={`Después: ${t.titulo}`} loading="lazy"><figcaption>DESPUÉS</figcaption></figure>
+                <figure class="work-photo"><img src={withBase(t.antes)} alt={`Antes: ${t.titulo}`} loading="lazy"><figcaption>ANTES</figcaption></figure>
+                <figure class="work-photo"><img src={withBase(t.despues)} alt={`Después: ${t.titulo}`} loading="lazy"><figcaption>DESPUÉS</figcaption></figure>
               </div>
             ) : (
               <div class="work-photos work-photos-single">
-                <figure class="work-photo"><img src={t.foto} alt={t.titulo} loading="lazy"></figure>
+                <figure class="work-photo"><img src={withBase(t.foto)} alt={t.titulo} loading="lazy"></figure>
               </div>
             )}
             <div class="work-info">

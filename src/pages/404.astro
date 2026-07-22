@@ -1,12 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../lib/url.js';
 ---
 <BaseLayout title="Página no encontrada · Martínez Gas-Plomería" description="La página que buscás no existe.">
   <section style="text-align:center">
     <div class="wrap-narrow" style="display:flex;flex-direction:column;gap:16px;align-items:center">
       <h1 style="font-size:48px">404</h1>
       <p style="font-size:17px;color:#555">No encontramos esa página.</p>
-      <a href="/" class="btn btn-primary">Volver al inicio</a>
+      <a href={withBase('/')} class="btn btn-primary">Volver al inicio</a>
     </div>
   </section>
 </BaseLayout>

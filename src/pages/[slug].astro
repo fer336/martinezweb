@@ -5,6 +5,7 @@ import WaIcon from '../components/WaIcon.astro';
 import site from '../data/site.json';
 import servicios from '../data/servicios.json';
 import pasos from '../data/pasos.json';
+import { withBase } from '../lib/url.js';
 
 export function getStaticPaths() {
   return servicios.map(s => ({ params: { slug: s.slug }, props: { s } }));
@@ -33,7 +34,7 @@ const wa = `https://wa.me/${site.whatsapp}?text=Hola,%20necesito%20service%20par
 <BaseLayout title={title} description={description} jsonld={faqJsonLd}>
   <section style="background:var(--bg);border-bottom:1px solid #ebebe6">
     <div class="wrap-narrow" style="display:flex;flex-direction:column;gap:16px">
-      <nav style="font-size:13px;color:#888;display:flex;gap:8px"><a href="/" style="color:#888">Inicio</a><span>/</span><span style="color:#111;font-weight:600">{s.t}</span></nav>
+      <nav style="font-size:13px;color:#888;display:flex;gap:8px"><a href={withBase('/')} style="color:#888">Inicio</a><span>/</span><span style="color:#111;font-weight:600">{s.t}</span></nav>
       {s.oficial && <span class="tag">SERVICE OFICIAL {s.marca?.toUpperCase()}</span>}
       <h1 style="font-size:clamp(30px,4.4vw,46px);line-height:1.08;text-wrap:pretty">{s.t} en Pinamar</h1>
       <p style="margin:0;font-size:17px;line-height:1.65;color:#444;text-wrap:pretty">Si tu bomba {marca} dejó de arrancar, perdió presión, funciona de manera intermitente o hace ruidos inusuales, en {site.name} realizamos diagnóstico, reparación, instalación y mantenimiento en Pinamar y la Costa.</p>

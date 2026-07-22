@@ -10,6 +10,7 @@ import servicios from '../data/servicios.json';
 import pasos from '../data/pasos.json';
 import resenas from '../data/resenas.json';
 import faqs from '../data/faqs.json';
+import { withBase } from '../lib/url.js';
 
 // Elegí la variante de hero: 1 split | 2 full-bleed | 3 negro tipográfico
 const HERO = 1;
@@ -55,7 +56,7 @@ const wa = `https://wa.me/${site.whatsapp}?text=Hola,%20quiero%20consultar%20por
       </div>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px">
         {servicios.map(s => (
-          <a href={`/${s.slug}/`} style={`border-radius:12px;padding:26px;display:flex;flex-direction:column;gap:10px;transition:all .2s;${s.oficial?'background:#111;color:#fff':'background:#fff;border:1px solid var(--border)'}`}>
+          <a href={withBase(`/${s.slug}/`)} style={`border-radius:12px;padding:26px;display:flex;flex-direction:column;gap:10px;transition:all .2s;${s.oficial?'background:#111;color:#fff':'background:#fff;border:1px solid var(--border)'}`}>
             {s.oficial && <span class="tag">SERVICE OFICIAL</span>}
             <strong style="font-family:var(--font-display);font-size:21px">{s.t}</strong>
             <span style={`font-size:14.5px;line-height:1.55;${s.oficial?'color:rgba(255,255,255,.7)':'color:#555'}`}>{s.d}</span>
@@ -117,11 +118,11 @@ const wa = `https://wa.me/${site.whatsapp}?text=Hola,%20quiero%20consultar%20por
         <h2 class="h2">Atendemos en toda la Costa</h2>
       </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <a href="/contacto/" class="pill">Pinamar</a>
-        <a href="/zonas/valeria-del-mar/" class="pill">Valeria del Mar</a>
-        <a href="/zonas/ostende/" class="pill">Ostende</a>
-        <a href="/zonas/carilo/" class="pill">Cariló</a>
-        <a href="/zonas/costa-esmeralda/" class="pill">Costa Esmeralda</a>
+        <a href={withBase('/contacto/')} class="pill">Pinamar</a>
+        <a href={withBase('/zonas/valeria-del-mar/')} class="pill">Valeria del Mar</a>
+        <a href={withBase('/zonas/ostende/')} class="pill">Ostende</a>
+        <a href={withBase('/zonas/carilo/')} class="pill">Cariló</a>
+        <a href={withBase('/zonas/costa-esmeralda/')} class="pill">Costa Esmeralda</a>
       </div>
     </div>
   </section>

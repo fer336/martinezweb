@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import site from '../../data/site.json';
+import { withBase } from '../../lib/url.js';
 const title = 'Mi bomba de agua no arranca: causas frecuentes y qué revisar';
 const description = 'Guía práctica: por qué tu bomba no arranca y qué podés revisar antes de llamar al técnico. Service oficial Rowa y Grundfos en Pinamar.';
 const jsonld = {
@@ -8,17 +9,17 @@ const jsonld = {
   '@type': 'Article',
   headline: title,
   description,
-  image: new URL('/assets/van.webp', Astro.site).toString(),
+  image: new URL(withBase('/assets/van.webp'), Astro.site).toString(),
   author: { '@type': 'Organization', name: site.name },
   publisher: { '@type': 'Organization', name: site.name },
   datePublished: '2026-01-15',
-  mainEntityOfPage: new URL('/blog/mi-bomba-no-arranca/', Astro.site).toString(),
+  mainEntityOfPage: new URL(withBase('/blog/mi-bomba-no-arranca/'), Astro.site).toString(),
 };
 ---
 <BaseLayout title={title} description={description} jsonld={jsonld}>
   <section style="padding:56px 0 24px">
     <div class="wrap-narrow" style="max-width:760px;display:flex;flex-direction:column;gap:16px">
-      <nav style="font-size:13px;color:#888;display:flex;gap:8px"><a href="/" style="color:#888">Inicio</a><span>/</span><span>Blog</span></nav>
+      <nav style="font-size:13px;color:#888;display:flex;gap:8px"><a href={withBase('/')} style="color:#888">Inicio</a><span>/</span><span>Blog</span></nav>
       <span style="font-family:ui-monospace,monospace;font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--yellow-ink)">GUÍA PRÁCTICA</span>
       <h1 style="font-size:clamp(28px,4vw,42px);line-height:1.1;text-wrap:pretty">{title}</h1>
       <span style="font-size:13.5px;color:#888">{site.name} · Pinamar</span>
@@ -40,7 +41,7 @@ const jsonld = {
         <p style="margin:0;font-size:14.5px;color:#555">Somos service oficial de ambas marcas en Pinamar y la Costa. Contanos qué revisaste y coordinamos el diagnóstico.</p>
         <div style="display:flex;gap:10px;flex-wrap:wrap">
           <a href={`https://wa.me/${site.whatsapp}?text=Hola,%20mi%20bomba%20no%20arranca`} target="_blank" rel="noopener" class="btn btn-primary" style="font-size:14px;padding:12px 18px">Consultar por WhatsApp</a>
-          <a href="/service-bombas-rowa-pinamar/" class="btn btn-outline" style="font-size:14px;padding:10px 16px">Ver service de bombas Rowa</a>
+          <a href={withBase('/service-bombas-rowa-pinamar/')} class="btn btn-outline" style="font-size:14px;padding:10px 16px">Ver service de bombas Rowa</a>
         </div>
       </div>
     </div>
