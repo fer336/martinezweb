@@ -1,0 +1,23 @@
+[
+  {
+    "slug": "service-bombas-rowa-pinamar",
+    "marca": "Rowa",
+    "oficial": true,
+    "t": "Service de bombas Rowa",
+    "d": "Diagnóstico, reparación y mantenimiento de bombas presurizadoras Rowa."
+  },
+  {
+    "slug": "service-bombas-grundfos-pinamar",
+    "marca": "Grundfos",
+    "oficial": true,
+    "t": "Service de bombas Grundfos",
+    "d": "Atención especializada para equipos Grundfos de presión y elevación."
+  },
+  {
+    "slug": "reparacion-bombas-agua",
+    "marca": null,
+    "oficial": false,
+    "t": "Reparación de bombas de agua",
+    "d": "Diagnóstico y reparación de bombas de todas las marcas."
+  }
+]

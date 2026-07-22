@@ -1,0 +1,17 @@
+---
+const { items, title = 'Preguntas frecuentes' } = Astro.props;
+---
+<div class="wrap-narrow" style="display:flex;flex-direction:column;gap:24px">
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div class="eyebrow"><span class="sq"></span><span>PREGUNTAS FRECUENTES</span></div>
+    <h2 class="h2">{title}</h2>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    {items.map(f => (
+      <details>
+        <summary><span>{f.q}</span><span class="faq-chev">+</span></summary>
+        <p style="margin:12px 0 0;font-size:14.5px;line-height:1.6;color:#555;text-wrap:pretty">{f.a}</p>
+      </details>
+    ))}
+  </div>
+</div>

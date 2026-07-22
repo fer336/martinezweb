@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FinalCta from '../components/FinalCta.astro';
+import WaIcon from '../components/WaIcon.astro';
+import site from '../data/site.json';
+import servicios from '../data/servicios.json';
+import pasos from '../data/pasos.json';
+
+export function getStaticPaths() {
+  return servicios.map(s => ({ params: { slug: s.slug }, props: { s } }));
+}
+const { s } = Astro.props;
+const marca = s.marca || 'de agua';
+const sintomas = [
+  `No arranca o hace un zumbido y se detiene.`,
+  'Perdió presión: sale menos agua en duchas y canillas.',
+  'Funciona de manera intermitente, arranca y se corta.',
+  'Hace ruidos o vibraciones inusuales.',
+  'Se apaga sola por protección y no vuelve a encender.',
+];
+const faqs = [
+  { q: '¿Conviene reparar o cambiar la bomba?', a: 'Depende del diagnóstico: la antigüedad del equipo, el estado del motor y el costo del repuesto. Te damos una recomendación honesta antes de decidir.' },
+  { q: '¿Cuánto tarda una reparación?', a: 'Depende de la falla y de la disponibilidad del repuesto. Después del diagnóstico te damos un tiempo estimado concreto.' },
+  { q: '¿Atienden fuera de Pinamar?', a: 'Sí: Cariló, Valeria del Mar, Ostende y Costa Esmeralda.' },
+];
+const faqJsonLd = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) };
+const title = `${s.t} en Pinamar${s.oficial ? ' · Service oficial' : ''} · Martínez`;
+const description = s.marca
+  ? `¿Tu bomba ${s.marca} no arranca o perdió presión? Diagnóstico y reparación por service oficial en Pinamar y la Costa.`
+  : 'Reparación y diagnóstico de bombas de agua de todas las marcas en Pinamar y la Costa.';
+const wa = `https://wa.me/${site.whatsapp}?text=Hola,%20necesito%20service%20para%20mi%20bomba%20${s.marca||''}`;
+---
+<BaseLayout title={title} description={description} jsonld={faqJsonLd}>
+  <section style="background:var(--bg);border-bottom:1px solid #ebebe6">
+    <div class="wrap-narrow" style="display:flex;flex-direction:column;gap:16px">
+      <nav style="font-size:13px;color:#888;display:flex;gap:8px"><a href="/" style="color:#888">Inicio</a><span>/</span><span style="color:#111;font-weight:600">{s.t}</span></nav>
+      {s.oficial && <span class="tag">SERVICE OFICIAL {s.marca?.toUpperCase()}</span>}
+      <h1 style="font-size:clamp(30px,4.4vw,46px);line-height:1.08;text-wrap:pretty">{s.t} en Pinamar</h1>
+      <p style="margin:0;font-size:17px;line-height:1.65;color:#444;text-wrap:pretty">Si tu bomba {marca} dejó de arrancar, perdió presión, funciona de manera intermitente o hace ruidos inusuales, en {site.name} realizamos diagnóstico, reparación, instalación y mantenimiento en Pinamar y la Costa.</p>
+      <a href={wa} target="_blank" rel="noopener" class="btn btn-primary" style="align-self:flex-start;font-size:15px;padding:14px 22px"><WaIcon size={17} />Consultar por mi bomba {s.marca||''}</a>
+    </div>
+  </section>
+  <section>
+    <div class="wrap-narrow" style="display:flex;flex-direction:column;gap:40px">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <h2 style="font-size:26px">Síntomas típicos de una bomba con problemas</h2>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          {sintomas.map(x => (<div style="display:flex;gap:12px;align-items:baseline;background:var(--bg);border-radius:8px;padding:14px 18px"><span style="color:var(--yellow-ink);font-weight:700;flex:none">—</span><span style="font-size:15px;line-height:1.5">{x}</span></div>))}
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <h2 style="font-size:26px">Qué incluye la visita de diagnóstico</h2>
+        <p style="margin:0;font-size:15.5px;line-height:1.65;color:#444;text-wrap:pretty">Revisamos la bomba, la instalación eléctrica e hidráulica asociada y las condiciones de presión de tu propiedad. Con el diagnóstico te pasamos un presupuesto claro antes de hacer cualquier trabajo.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <h2 style="font-size:26px">Proceso de trabajo</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">
+          {pasos.map(p => (<div style="border:1px solid var(--border);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:6px"><span style="font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--yellow-ink)">{p.num}</span><strong style="font-size:14px">{p.t}</strong></div>))}
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <h2 style="font-size:26px">Preguntas frecuentes</h2>
+        {faqs.map(f => (<details style="padding:16px 20px"><summary style="font-size:15px"><span>{f.q}</span><span class="faq-chev">+</span></summary><p style="margin:10px 0 0;font-size:14.5px;line-height:1.6;color:#555">{f.a}</p></details>))}
+      </div>
+    </div>
+  </section>
+  <FinalCta title={`¿Tu bomba ${s.marca||''} necesita service?`} msg={`Hola,%20necesito%20service%20para%20mi%20bomba%20${s.marca||''}`} />
+</BaseLayout>

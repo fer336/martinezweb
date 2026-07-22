@@ -1,0 +1,15 @@
+---
+import site from '../data/site.json';
+import WaIcon from './WaIcon.astro';
+const { title = '¿Problemas con tu bomba de agua?', text = 'Escribinos por WhatsApp y contanos qué le pasa. Te respondemos y coordinamos la visita.', msg = 'Hola,%20quiero%20consultar%20por%20un%20service%20de%20bomba' } = Astro.props;
+---
+<section style="background:#111;color:#fff;border-top:4px solid var(--yellow)">
+  <div class="wrap-narrow" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px">
+    <h2 class="h2" style="font-size:clamp(28px,4vw,44px);text-wrap:pretty">{title}</h2>
+    <p style="margin:0;font-size:17px;line-height:1.6;color:rgba(255,255,255,.75);max-width:46ch">{text}</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+      <a href={`https://wa.me/${site.whatsapp}?text=${msg}`} target="_blank" rel="noopener" class="btn btn-primary"><WaIcon />WhatsApp {site.whatsappDisplay}</a>
+    </div>
+    <span style="font-size:13.5px;color:rgba(255,255,255,.5)">{site.hours} · Pinamar y la Costa</span>
+  </div>
+</section>

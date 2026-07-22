@@ -1,0 +1,46 @@
+[
+  {
+    "slug": "carilo",
+    "nombre": "Cariló",
+    "intro": "Atendemos casas, comercios y propiedades de alquiler en Cariló con service, reparación e instalación de bombas Rowa y Grundfos. Salimos desde Pinamar, a minutos de la zona.",
+    "problemas": [
+      "Bombas presurizadoras que pierden presión en temporada alta.",
+      "Equipos que quedan meses sin uso y no arrancan al abrir la casa.",
+      "Cortes intermitentes por instalaciones eléctricas al límite.",
+      "Sistemas de riego con presión insuficiente."
+    ]
+  },
+  {
+    "slug": "valeria-del-mar",
+    "nombre": "Valeria del Mar",
+    "intro": "Service y reparación de bombas de agua en Valeria del Mar. Diagnóstico, presupuesto claro y trabajo con garantía para hogares y comercios de la zona.",
+    "problemas": [
+      "Bombas que no arrancan al reabrir la casa después del invierno.",
+      "Pérdida de presión en duchas y canillas.",
+      "Ruidos y vibraciones por falta de mantenimiento.",
+      "Instalaciones que necesitan una presurizadora bien dimensionada."
+    ]
+  },
+  {
+    "slug": "ostende",
+    "nombre": "Ostende",
+    "intro": "Técnicos de bombas Rowa y Grundfos en Ostende. Coordinamos la visita por WhatsApp, hacemos el diagnóstico y te pasamos el presupuesto antes de trabajar.",
+    "problemas": [
+      "Bombas que arrancan y se cortan de manera intermitente.",
+      "Equipos viejos que conviene evaluar si reparar o cambiar.",
+      "Baja presión en temporada de mucha demanda.",
+      "Instalaciones sin mantenimiento previo a la temporada."
+    ]
+  },
+  {
+    "slug": "costa-esmeralda",
+    "nombre": "Costa Esmeralda",
+    "intro": "Service de bombas de agua en Costa Esmeralda. Atendemos lotes, casas y emprendimientos con reparación, instalación y mantenimiento de sistemas de presión.",
+    "problemas": [
+      "Sistemas de presurización para casas grandes con varios baños.",
+      "Bombas de pozo y elevación que necesitan revisión.",
+      "Presión despareja entre plantas.",
+      "Mantenimiento preventivo antes de la temporada."
+    ]
+  }
+]

@@ -1,0 +1,21 @@
+[
+  {
+    "categoria": "Reparación de bombas",
+    "titulo": "Cambio de motor en bomba Rowa",
+    "zona": "Cariló",
+    "antes": "/assets/trabajos/placeholder-antes.svg",
+    "despues": "/assets/trabajos/placeholder-despues.svg"
+  },
+  {
+    "categoria": "Plomería y gas",
+    "titulo": "Reparación de cañerías e instalación de artefactos",
+    "zona": "Valeria del Mar",
+    "foto": "/assets/trabajos/placeholder-trabajo.svg"
+  },
+  {
+    "categoria": "Plomería y gas",
+    "titulo": "Instalación de gas para vivienda",
+    "zona": "Ostende",
+    "foto": "/assets/trabajos/placeholder-trabajo.svg"
+  }
+]

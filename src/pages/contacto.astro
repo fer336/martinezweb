@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import WaIcon from '../components/WaIcon.astro';
+import site from '../data/site.json';
+---
+<BaseLayout title="Contacto · Martínez Gas-Plomería Pinamar" description="Escribinos por WhatsApp: service de bombas en Pinamar y la Costa. Lunes a sábados.">
+  <section>
+    <div class="wrap" style="max-width:1000px;display:flex;flex-direction:column;gap:32px">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <h1 style="font-size:clamp(30px,4.4vw,46px)">Contacto</h1>
+        <p style="margin:0;font-size:17px;line-height:1.6;color:#444;max-width:56ch;text-wrap:pretty">La forma más rápida es WhatsApp: contanos qué pasa, mandanos una foto o video si podés, y coordinamos la visita.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;max-width:600px">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <a href={`https://wa.me/${site.whatsapp}?text=Hola,%20quiero%20hacer%20una%20consulta`} target="_blank" rel="noopener" style="display:flex;align-items:center;gap:14px;background:var(--yellow);border-radius:12px;padding:20px 22px;color:#111"><WaIcon size={26} /><span style="display:flex;flex-direction:column"><strong style="font-size:16px;font-weight:800">WhatsApp</strong><span style="font-size:14.5px">{site.whatsappDisplay}</span></span></a>
+          <div style="background:var(--bg);border-radius:12px;padding:20px 22px;display:flex;flex-direction:column;gap:8px"><strong style="font-size:14px;font-weight:800;font-family:ui-monospace,monospace;letter-spacing:.08em">HORARIOS</strong><span style="font-size:15px;color:#333">{site.hours}</span></div>
+          <div style="background:var(--bg);border-radius:12px;padding:20px 22px;display:flex;flex-direction:column;gap:8px"><strong style="font-size:14px;font-weight:800;font-family:ui-monospace,monospace;letter-spacing:.08em">ZONAS</strong><span style="font-size:15px;color:#333;line-height:1.5">{site.zonas.join(' · ')}</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

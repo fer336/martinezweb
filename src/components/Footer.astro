@@ -1,0 +1,33 @@
+---
+import site from '../data/site.json';
+import InstagramIcon from './InstagramIcon.astro';
+const year = new Date().getFullYear();
+---
+<footer style="background:#111;color:#fff;padding:40px 0 32px;border-top:1px solid rgba(255,255,255,.1)">
+  <div class="wrap" style="display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:flex-start">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <img src="/assets/logo_vectorizado.svg" alt={site.name} style="height:40px;width:auto;align-self:flex-start">
+        <span style="font-size:13.5px;color:rgba(255,255,255,.55);max-width:36ch;line-height:1.5">Service oficial Rowa y Grundfos. Bombas de agua, plomería y gas en Pinamar y la Costa.</span>
+      </div>
+      <div style="display:flex;gap:48px;flex-wrap:wrap">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-family:ui-monospace,monospace;font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--yellow)">SERVICIOS</span>
+          <a href="/service-bombas-rowa-pinamar/" style="color:rgba(255,255,255,.75);font-size:14px">Service Rowa</a>
+          <a href="/service-bombas-grundfos-pinamar/" style="color:rgba(255,255,255,.75);font-size:14px">Service Grundfos</a>
+          <a href="/reparacion-bombas-agua/" style="color:rgba(255,255,255,.75);font-size:14px">Reparación de bombas</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-family:ui-monospace,monospace;font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--yellow)">CONTACTO</span>
+          <a href={`https://wa.me/${site.whatsapp}`} target="_blank" rel="noopener" style="color:rgba(255,255,255,.75);font-size:14px">WhatsApp {site.whatsappDisplay}</a>
+          <a href="/contacto/" style="color:rgba(255,255,255,.75);font-size:14px">Formulario de contacto</a>
+          <a href={`https://instagram.com/${site.instagram}`} target="_blank" rel="noopener" style="color:rgba(255,255,255,.75);font-size:14px;display:flex;align-items:center;gap:8px"><InstagramIcon size={16} fill="rgba(255,255,255,.75)" />@{site.instagram}</a>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:18px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12.5px;color:rgba(255,255,255,.4)">
+      <span>© {year} {site.name} · Pinamar, Buenos Aires</span>
+      <span>{site.zonas.join(' · ')}</span>
+    </div>
+  </div>
+</footer>

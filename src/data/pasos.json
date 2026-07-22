@@ -1,0 +1,27 @@
+[
+  {
+    "num": "1",
+    "t": "Consulta",
+    "d": "Nos escribís por WhatsApp y nos contás el problema."
+  },
+  {
+    "num": "2",
+    "t": "Diagnóstico",
+    "d": "Revisamos la bomba y la instalación en tu propiedad."
+  },
+  {
+    "num": "3",
+    "t": "Presupuesto",
+    "d": "Te pasamos un presupuesto claro antes de trabajar."
+  },
+  {
+    "num": "4",
+    "t": "Reparación",
+    "d": "Reparamos o instalamos con repuestos adecuados."
+  },
+  {
+    "num": "5",
+    "t": "Prueba final",
+    "d": "Verificamos presión y funcionamiento con vos."
+  }
+]

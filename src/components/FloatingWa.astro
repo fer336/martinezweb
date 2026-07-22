@@ -1,0 +1,5 @@
+---
+import site from '../data/site.json';
+import WaIcon from './WaIcon.astro';
+---
+<a href={`https://wa.me/${site.whatsapp}?text=Hola,%20quiero%20hacer%20una%20consulta`} target="_blank" rel="noopener" aria-label="WhatsApp" style="position:fixed;right:20px;bottom:20px;z-index:60;width:56px;height:56px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px -6px rgba(0,0,0,.4)"><WaIcon size={28} fill="#fff" /></a>

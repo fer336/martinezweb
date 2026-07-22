@@ -1,0 +1,32 @@
+[
+  {
+    "num": "01",
+    "t": "No arranca",
+    "d": "La bomba no responde o hace un zumbido y se corta."
+  },
+  {
+    "num": "02",
+    "t": "Hace ruido",
+    "d": "Golpeteos, vibración o ruidos inusuales al funcionar."
+  },
+  {
+    "num": "03",
+    "t": "Perdió presión",
+    "d": "Sale menos agua que antes en duchas y canillas."
+  },
+  {
+    "num": "04",
+    "t": "Cortes intermitentes",
+    "d": "Arranca y se detiene sola, o funciona a intervalos."
+  },
+  {
+    "num": "05",
+    "t": "Instalación deficiente",
+    "d": "Bombas mal dimensionadas o mal conectadas."
+  },
+  {
+    "num": "06",
+    "t": "Falta de mantenimiento",
+    "d": "Equipos sin revisión que fallan en plena temporada."
+  }
+]

@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FinalCta from '../../components/FinalCta.astro';
+import WaIcon from '../../components/WaIcon.astro';
+import site from '../../data/site.json';
+import zonas from '../../data/zonas.json';
+
+export function getStaticPaths() {
+  return zonas.map(z => ({ params: { slug: z.slug }, props: { z } }));
+}
+const { z } = Astro.props;
+const title = `Service de bombas de agua en ${z.nombre} · Martínez`;
+const description = `Técnico de bombas Rowa y Grundfos en ${z.nombre}. Reparación, instalación y mantenimiento. Coordinamos la visita por WhatsApp.`;
+const wa = `https://wa.me/${site.whatsapp}?text=Hola,%20necesito%20un%20service%20de%20bomba%20en%20${encodeURIComponent(z.nombre)}`;
+---
+<BaseLayout title={title} description={description}>
+  <section style="background:var(--bg);border-bottom:1px solid #ebebe6">
+    <div class="wrap-narrow" style="display:flex;flex-direction:column;gap:16px">
+      <nav style="font-size:13px;color:#888;display:flex;gap:8px"><a href="/" style="color:#888">Inicio</a><span>/</span><span>Zonas</span><span>/</span><span style="color:#111;font-weight:600">{z.nombre}</span></nav>
+      <h1 style="font-size:clamp(30px,4.4vw,46px);line-height:1.08;text-wrap:pretty">Service de bombas de agua en {z.nombre}</h1>
+      <p style="margin:0;font-size:17px;line-height:1.65;color:#444;text-wrap:pretty">{z.intro}</p>
+      <a href={wa} target="_blank" rel="noopener" class="btn btn-primary" style="align-self:flex-start;font-size:15px;padding:14px 22px"><WaIcon size={17} />Coordinar visita en {z.nombre}</a>
+    </div>
+  </section>
+  <section>
+    <div class="wrap-narrow" style="display:flex;flex-direction:column;gap:36px">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <h2 style="font-size:26px">Problemas frecuentes en {z.nombre}</h2>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          {z.problemas.map(x => (<div style="display:flex;gap:12px;align-items:baseline;background:var(--bg);border-radius:8px;padding:14px 18px"><span style="color:var(--yellow-ink);font-weight:700;flex:none">—</span><span style="font-size:15px;line-height:1.5">{x}</span></div>))}
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <h2 style="font-size:26px">Cómo coordinar una visita</h2>
+        <p style="margin:0;font-size:15.5px;line-height:1.65;color:#444;text-wrap:pretty">Escribinos por WhatsApp con la dirección y una descripción del problema (si podés, un video del ruido o del tablero ayuda mucho). Coordinamos día y horario, hacemos el diagnóstico y te pasamos el presupuesto antes de trabajar. Si administrás una propiedad de alquiler, coordinamos directamente con el encargado o la inmobiliaria.</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a href="/service-bombas-rowa-pinamar/" class="pill">Service Rowa</a>
+        <a href="/service-bombas-grundfos-pinamar/" class="pill">Service Grundfos</a>
+        <a href="/reparacion-bombas-agua/" class="pill">Reparación de bombas</a>
+      </div>
+    </div>
+  </section>
+  <FinalCta title={`¿Necesitás un técnico de bombas en ${z.nombre}?`} msg={`Hola,%20necesito%20un%20service%20de%20bomba%20en%20${encodeURIComponent(z.nombre)}`} />
+</BaseLayout>
