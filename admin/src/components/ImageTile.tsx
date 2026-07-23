@@ -36,7 +36,6 @@ export default function ImageTile({
         <input
           type="file"
           accept="image/jpeg,image/png,image/webp"
-          capture="environment"
           onChange={(e) => handleFile(e.target.files?.[0])}
         />
       </label>
