@@ -13,7 +13,13 @@ class Settings(BaseSettings):
     jwt_algorithm: str = "HS256"
     jwt_expire_minutes: int = 480
 
-    cors_origins: list[str] = ["http://localhost:5173"]
+    # Lista separada por comas (no JSON: más robusto al pasar por archivos
+    # de secrets/shell, que suelen romper las comillas).
+    cors_origins: str = "http://localhost:5173"
+
+    @property
+    def cors_origins_list(self) -> list[str]:
+        return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
 
     # MinIO / cualquier storage S3-compatible
     s3_endpoint_url: str = ""
