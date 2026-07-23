@@ -47,7 +47,7 @@ if (apiUrl) {
       <div class="work-grid">
         {trabajos.map(t => (
           <div class="work-card">
-            <div class="work-gallery">
+            <button type="button" class="work-gallery" data-imagenes={JSON.stringify(t.imagenes)} data-titulo={t.titulo} aria-label={`Ver fotos de ${t.titulo} en grande`}>
               {t.imagenes.map((img, i) => (
                 <div class:list={['work-slide', i === 0 && 'is-active']}>
                   <img
@@ -58,7 +58,7 @@ if (apiUrl) {
                   {img.etiqueta && <span class="badge">{img.etiqueta === 'antes' ? 'ANTES' : 'DESPUÉS'}</span>}
                 </div>
               ))}
-            </div>
+            </button>
             <div class="work-info">
               <span style="font-family:ui-monospace,monospace;font-size:10.5px;font-weight:700;letter-spacing:.1em;color:var(--yellow-ink)">{t.categoria.toUpperCase()}</span>
               <strong style="font-size:15.5px">{t.titulo}</strong>
@@ -73,14 +73,37 @@ if (apiUrl) {
   </section>
 
   <FinalCta />
+
+  <dialog id="lightbox" class="lightbox">
+    <button type="button" class="lightbox-close" aria-label="Cerrar">✕</button>
+    <button type="button" class="lightbox-nav lightbox-prev" aria-label="Foto anterior">‹</button>
+    <div class="lightbox-stage">
+      <img id="lightbox-img" alt="">
+      <span id="lightbox-badge" class="badge"></span>
+    </div>
+    <button type="button" class="lightbox-nav lightbox-next" aria-label="Foto siguiente">›</button>
+    <p id="lightbox-counter" class="lightbox-counter"></p>
+  </dialog>
 </BaseLayout>
 
 <script>
+  interface TrabajoImagen {
+    url: string;
+    etiqueta: 'antes' | 'despues' | null;
+  }
+
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const galleries = document.querySelectorAll<HTMLElement>('.work-gallery');
+  const paused = new Set<HTMLElement>();
+
   if (!reduceMotion) {
-    const galleries = document.querySelectorAll<HTMLElement>('.work-gallery');
+    galleries.forEach((gallery) => {
+      gallery.addEventListener('mouseenter', () => paused.add(gallery));
+      gallery.addEventListener('mouseleave', () => paused.delete(gallery));
+    });
     setInterval(() => {
       galleries.forEach((gallery) => {
+        if (paused.has(gallery)) return;
         const slides = gallery.querySelectorAll<HTMLElement>('.work-slide');
         if (slides.length < 2) return;
         const activeIndex = [...slides].findIndex((s) => s.classList.contains('is-active'));
@@ -88,5 +111,61 @@ if (apiUrl) {
         slides[(activeIndex + 1) % slides.length].classList.add('is-active');
       });
     }, 2000);
+  }
+
+  const lightbox = document.getElementById('lightbox') as HTMLDialogElement | null;
+  const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement | null;
+  const lightboxBadge = document.getElementById('lightbox-badge');
+  const lightboxCounter = document.getElementById('lightbox-counter');
+  const prevBtn = lightbox?.querySelector<HTMLButtonElement>('.lightbox-prev');
+  const nextBtn = lightbox?.querySelector<HTMLButtonElement>('.lightbox-next');
+  const closeBtn = lightbox?.querySelector<HTMLButtonElement>('.lightbox-close');
+
+  if (lightbox && lightboxImg && lightboxBadge && lightboxCounter && prevBtn && nextBtn && closeBtn) {
+    let imagenes: TrabajoImagen[] = [];
+    let titulo = '';
+    let index = 0;
+
+    function render() {
+      const img = imagenes[index];
+      lightboxImg!.src = img.url;
+      lightboxImg!.alt =
+        img.etiqueta === 'antes' ? `Antes: ${titulo}` : img.etiqueta === 'despues' ? `Después: ${titulo}` : titulo;
+      lightboxBadge!.textContent = img.etiqueta === 'antes' ? 'ANTES' : img.etiqueta === 'despues' ? 'DESPUÉS' : '';
+      lightboxBadge!.hidden = !img.etiqueta;
+      const multiple = imagenes.length > 1;
+      prevBtn!.hidden = !multiple;
+      nextBtn!.hidden = !multiple;
+      lightboxCounter!.hidden = !multiple;
+      lightboxCounter!.textContent = `${index + 1} / ${imagenes.length}`;
+    }
+
+    galleries.forEach((gallery) => {
+      gallery.addEventListener('click', () => {
+        imagenes = JSON.parse(gallery.dataset.imagenes || '[]');
+        titulo = gallery.dataset.titulo || '';
+        const slides = gallery.querySelectorAll<HTMLElement>('.work-slide');
+        index = Math.max(0, [...slides].findIndex((s) => s.classList.contains('is-active')));
+        render();
+        lightbox.showModal();
+      });
+    });
+
+    prevBtn.addEventListener('click', () => {
+      index = (index - 1 + imagenes.length) % imagenes.length;
+      render();
+    });
+    nextBtn.addEventListener('click', () => {
+      index = (index + 1) % imagenes.length;
+      render();
+    });
+    closeBtn.addEventListener('click', () => lightbox.close());
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) lightbox.close();
+    });
+    lightbox.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') prevBtn.click();
+      if (e.key === 'ArrowRight') nextBtn.click();
+    });
   }
 </script>
