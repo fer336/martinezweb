@@ -2,7 +2,13 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    # pydantic-settings parsea estos archivos como .env directamente (sin
+    # pasar por shell), así que las comillas/$/etc. del secret de Docker
+    # llegan intactos. El último de la lista que exista gana.
+    model_config = SettingsConfigDict(
+        env_file=(".env", "/run/secrets/backend.env"),
+        extra="ignore",
+    )
 
     database_url: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/trabajos"
 

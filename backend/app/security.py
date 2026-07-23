@@ -17,7 +17,12 @@ def hash_password(password: str) -> str:
 def verify_password(password: str, password_hash: str) -> bool:
     if not password_hash:
         return False
-    return bcrypt.checkpw(password.encode(), password_hash.encode())
+    try:
+        return bcrypt.checkpw(password.encode(), password_hash.encode())
+    except ValueError:
+        # Hash mal formado (ej. variable de entorno corrupta/incompleta):
+        # tratamos como credenciales inválidas, no como error del servidor.
+        return False
 
 
 def create_access_token(subject: str) -> str:
