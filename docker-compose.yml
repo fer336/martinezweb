@@ -62,7 +62,7 @@ services:
 
   # 🌐 Sitio web público (Astro estático) — martinezplomeria.qeva.xyz
   web:
-    image: ghcr.io/fer336/martinezweb-web:content-19
+    image: ghcr.io/fer336/martinezweb-web:content-21
     networks:
       - network_public
     deploy:
