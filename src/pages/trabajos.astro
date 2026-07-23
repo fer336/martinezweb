@@ -1,8 +1,27 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FinalCta from '../components/FinalCta.astro';
-import trabajos from '../data/trabajos.json';
-import { withBase } from '../lib/url.js';
+
+interface Trabajo {
+  id: number;
+  categoria: string;
+  titulo: string;
+  tipo: 'antes_despues' | 'foto';
+  antes_url: string | null;
+  despues_url: string | null;
+  foto_url: string | null;
+}
+
+const apiUrl = import.meta.env.PUBLIC_API_URL;
+let trabajos: Trabajo[] = [];
+if (apiUrl) {
+  try {
+    const res = await fetch(`${apiUrl}/trabajos`);
+    if (res.ok) trabajos = await res.json();
+  } catch {
+    // La API no respondió durante el build: se muestra la sección vacía en vez de romper el sitio.
+  }
+}
 ---
 <BaseLayout
   title="Trabajos realizados · Martínez Gas-Plomería Pinamar"
@@ -21,14 +40,14 @@ import { withBase } from '../lib/url.js';
       <div class="work-grid">
         {trabajos.map(t => (
           <div class="work-card">
-            {t.antes && t.despues ? (
+            {t.tipo === 'antes_despues' ? (
               <div class="work-photos">
-                <figure class="work-photo"><img src={withBase(t.antes)} alt={`Antes: ${t.titulo}`} loading="lazy"><figcaption>ANTES</figcaption></figure>
-                <figure class="work-photo"><img src={withBase(t.despues)} alt={`Después: ${t.titulo}`} loading="lazy"><figcaption>DESPUÉS</figcaption></figure>
+                <figure class="work-photo"><img src={t.antes_url!} alt={`Antes: ${t.titulo}`} loading="lazy"><figcaption>ANTES</figcaption></figure>
+                <figure class="work-photo"><img src={t.despues_url!} alt={`Después: ${t.titulo}`} loading="lazy"><figcaption>DESPUÉS</figcaption></figure>
               </div>
             ) : (
               <div class="work-photos work-photos-single">
-                <figure class="work-photo"><img src={withBase(t.foto)} alt={t.titulo} loading="lazy"></figure>
+                <figure class="work-photo"><img src={t.foto_url!} alt={t.titulo} loading="lazy"></figure>
               </div>
             )}
             <div class="work-info">
@@ -37,6 +56,9 @@ import { withBase } from '../lib/url.js';
             </div>
           </div>
         ))}
+        {trabajos.length === 0 && (
+          <p style="color:#888;font-size:14.5px">Estamos cargando las fotos de los últimos trabajos — volvé a pasar pronto.</p>
+        )}
       </div>
     </div>
   </section>

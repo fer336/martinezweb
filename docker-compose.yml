@@ -1,0 +1,99 @@
+version: "3.8"
+
+services:
+  # ⚙️ Backend API (FastAPI) — cms-martinez.qeva.xyz/api/*
+  backend:
+    image: ghcr.io/fer336/martinezweb-backend:latest
+    networks:
+      - network_public
+      - martinez-internal
+    secrets:
+      - source: martinez_backend_env
+        target: /run/secrets/backend.env
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 5
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=network_public"
+
+        # Todo el backend cuelga de /api (auth, admin, trabajos, config,
+        # health, docs) — una sola regla de path alcanza.
+        - "traefik.http.routers.martinez-backend.rule=Host(`cms-martinez.qeva.xyz`) && PathPrefix(`/api`)"
+        - "traefik.http.routers.martinez-backend.entrypoints=websecure"
+        - "traefik.http.routers.martinez-backend.tls.certresolver=letsencryptresolver"
+        - "traefik.http.routers.martinez-backend.priority=100"
+
+        - "traefik.http.services.martinez-backend.loadbalancer.server.port=8000"
+
+  # 🎨 Panel de administración (React) — cms-martinez.qeva.xyz
+  admin:
+    image: ghcr.io/fer336/martinezweb-admin:latest
+    networks:
+      - network_public
+      - martinez-internal
+    depends_on:
+      - backend
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=network_public"
+        - "traefik.http.routers.martinez-admin.rule=Host(`cms-martinez.qeva.xyz`)"
+        - "traefik.http.routers.martinez-admin.entrypoints=websecure"
+        - "traefik.http.routers.martinez-admin.tls.certresolver=letsencryptresolver"
+        - "traefik.http.routers.martinez-admin.priority=1"
+        - "traefik.http.services.martinez-admin.loadbalancer.server.port=80"
+
+  # 🌐 Sitio web público (Astro estático) — martinezplomeria.qeva.xyz
+  web:
+    image: ghcr.io/fer336/martinezweb-web:latest
+    networks:
+      - network_public
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=network_public"
+        - "traefik.http.routers.martinez-web.rule=Host(`martinezplomeria.qeva.xyz`)"
+        - "traefik.http.routers.martinez-web.entrypoints=websecure"
+        - "traefik.http.routers.martinez-web.tls.certresolver=letsencryptresolver"
+        - "traefik.http.routers.martinez-web.priority=1"
+        - "traefik.http.services.martinez-web.loadbalancer.server.port=80"
+
+networks:
+  network_public:
+    external: true
+    name: network_public
+  martinez-internal:
+    driver: overlay
+    internal: true
+
+secrets:
+  martinez_backend_env:
+    external: true
+    # Contiene DATABASE_URL, ADMIN_USERNAME, ADMIN_PASSWORD_HASH, JWT_SECRET,
+    # CORS_ORIGINS, S3_*, GITHUB_TOKEN, GITHUB_REPO, GITHUB_WORKFLOW_FILE, GITHUB_REF

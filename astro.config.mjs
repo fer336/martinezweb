@@ -1,10 +1,9 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
-// Deploy actual: GitHub Pages (proyecto "martinezweb").
-// Cuando tengan el dominio propio: site: 'https://www.martinezgasplomeria.com.ar', sacar "base".
+// Dominio temporal propio (Docker/Portainer). Cuando llegue el dominio
+// definitivo, solo hay que cambiar "site" acá.
 export default defineConfig({
-  site: 'https://fer336.github.io',
-  base: '/martinezweb',
+  site: 'https://martinezplomeria.qeva.xyz',
   integrations: [sitemap()],
 });
