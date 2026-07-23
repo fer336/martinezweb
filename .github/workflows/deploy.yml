@@ -62,16 +62,10 @@ jobs:
     needs: build-and-push
     runs-on: ubuntu-latest
     steps:
-      - name: Disparar redeploy en Portainer
+      - name: Disparar redeploy del stack en Portainer
         run: |
-          for url in \
-            "${{ secrets.PORTAINER_WEBHOOK_WEB }}" \
-            "${{ secrets.PORTAINER_WEBHOOK_ADMIN }}" \
-            "${{ secrets.PORTAINER_WEBHOOK_BACKEND }}"; do
-            if [ -n "$url" ]; then
-              curl -sf -X POST "$url"
-            else
-              echo "Falta configurar un secret de webhook de Portainer" >&2
-              exit 1
-            fi
-          done
+          if [ -z "${{ secrets.PORTAINER_WEBHOOK }}" ]; then
+            echo "Falta configurar el secret PORTAINER_WEBHOOK" >&2
+            exit 1
+          fi
+          curl -sf -X POST "${{ secrets.PORTAINER_WEBHOOK }}"
