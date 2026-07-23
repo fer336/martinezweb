@@ -2,14 +2,16 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FinalCta from '../components/FinalCta.astro';
 
+interface TrabajoImagen {
+  url: string;
+  etiqueta: 'antes' | 'despues' | null;
+}
+
 interface Trabajo {
   id: number;
   categoria: string;
   titulo: string;
-  tipo: 'antes_despues' | 'foto';
-  antes_url: string | null;
-  despues_url: string | null;
-  foto_url: string | null;
+  imagenes: TrabajoImagen[];
 }
 
 const apiUrl = import.meta.env.PUBLIC_API_URL;
@@ -40,16 +42,18 @@ if (apiUrl) {
       <div class="work-grid">
         {trabajos.map(t => (
           <div class="work-card">
-            {t.tipo === 'antes_despues' ? (
-              <div class="work-photos">
-                <figure class="work-photo"><img src={t.antes_url!} alt={`Antes: ${t.titulo}`} loading="lazy"><figcaption>ANTES</figcaption></figure>
-                <figure class="work-photo"><img src={t.despues_url!} alt={`Después: ${t.titulo}`} loading="lazy"><figcaption>DESPUÉS</figcaption></figure>
-              </div>
-            ) : (
-              <div class="work-photos work-photos-single">
-                <figure class="work-photo"><img src={t.foto_url!} alt={t.titulo} loading="lazy"></figure>
-              </div>
-            )}
+            <div class="work-gallery">
+              {t.imagenes.map((img, i) => (
+                <div class:list={['work-slide', i === 0 && 'is-active']}>
+                  <img
+                    src={img.url}
+                    alt={img.etiqueta === 'antes' ? `Antes: ${t.titulo}` : img.etiqueta === 'despues' ? `Después: ${t.titulo}` : t.titulo}
+                    loading="lazy"
+                  >
+                  {img.etiqueta && <span class="badge">{img.etiqueta === 'antes' ? 'ANTES' : 'DESPUÉS'}</span>}
+                </div>
+              ))}
+            </div>
             <div class="work-info">
               <span style="font-family:ui-monospace,monospace;font-size:10.5px;font-weight:700;letter-spacing:.1em;color:var(--yellow-ink)">{t.categoria.toUpperCase()}</span>
               <strong style="font-size:15.5px">{t.titulo}</strong>
@@ -65,3 +69,19 @@ if (apiUrl) {
 
   <FinalCta />
 </BaseLayout>
+
+<script>
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduceMotion) {
+    const galleries = document.querySelectorAll<HTMLElement>('.work-gallery');
+    setInterval(() => {
+      galleries.forEach((gallery) => {
+        const slides = gallery.querySelectorAll<HTMLElement>('.work-slide');
+        if (slides.length < 2) return;
+        const activeIndex = [...slides].findIndex((s) => s.classList.contains('is-active'));
+        slides[activeIndex]?.classList.remove('is-active');
+        slides[(activeIndex + 1) % slides.length].classList.add('is-active');
+      });
+    }, 2000);
+  }
+</script>

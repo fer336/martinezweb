@@ -7,7 +7,7 @@ import AppHeader from '../components/AppHeader';
 import { LogoutIcon, TrashIcon } from '../components/Icons';
 
 function thumbOf(t: Trabajo): string | null {
-  return t.antes_url ?? t.foto_url ?? t.despues_url;
+  return t.imagenes[0]?.url ?? null;
 }
 
 export default function TrabajosList() {

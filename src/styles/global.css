@@ -67,10 +67,9 @@ details[open] .faq-chev{transform:rotate(45deg)}
 .work-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px}
 .work-card{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:all .2s}
 .work-card:hover{border-color:var(--yellow);box-shadow:0 12px 24px -16px rgba(17,17,17,.3)}
-.work-photos{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)}
-.work-photos-single{grid-template-columns:1fr}
-.work-photo{position:relative;margin:0;aspect-ratio:4/3;overflow:hidden;background:#eee}
-.work-photos:not(.work-photos-single) .work-photo{aspect-ratio:2/3}
+.work-gallery{position:relative;aspect-ratio:4/3;overflow:hidden;background:#eee}
+.work-slide{position:absolute;inset:0;opacity:0;transition:opacity .6s ease}
+.work-slide.is-active{opacity:1}
 .hero-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:48px;align-items:center}
 .hero-content{display:flex;flex-direction:column;gap:20px}
 .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
@@ -86,7 +85,7 @@ details[open] .faq-chev{transform:rotate(45deg)}
   .hero-media{max-width:420px;width:100%;margin:0 auto}
   .hero-badge{left:50%;transform:translateX(-50%)}
 }
-.work-photo img{width:100%;height:100%;object-fit:cover;display:block}
-.work-photo figcaption{position:absolute;top:8px;left:8px;font-family:ui-monospace,monospace;font-size:10px;font-weight:700;letter-spacing:.08em;padding:4px 9px;border-radius:999px;background:rgba(17,17,17,.75);color:#fff}
+.work-slide img{width:100%;height:100%;object-fit:cover;display:block}
+.work-slide .badge{position:absolute;top:8px;left:8px;font-family:ui-monospace,monospace;font-size:10px;font-weight:700;letter-spacing:.08em;padding:4px 9px;border-radius:999px;background:rgba(17,17,17,.75);color:#fff}
 .work-info{padding:16px 18px;display:flex;flex-direction:column;gap:4px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}

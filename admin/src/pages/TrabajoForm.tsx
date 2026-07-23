@@ -1,22 +1,19 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as api from '../api/client';
-import type { Catalogo, TipoTrabajo, TrabajoInput } from '../types';
+import type { Catalogo, TrabajoInput } from '../types';
 import AppHeader from '../components/AppHeader';
 import WorkCard from '../components/WorkCard';
-import ImageTile from '../components/ImageTile';
+import ImageGallery from '../components/ImageGallery';
 import { BackIcon } from '../components/Icons';
 
 const EMPTY: TrabajoInput = {
   categoria_id: 0,
   titulo: '',
   zona_id: null,
-  tipo: 'antes_despues',
-  antes_url: null,
-  despues_url: null,
-  foto_url: null,
   orden: 0,
   publicado: true,
+  imagenes: [],
 };
 
 function CategoriaField({
@@ -117,12 +114,9 @@ export default function TrabajoForm() {
             categoria_id: found.categoria_id,
             titulo: found.titulo,
             zona_id: found.zona_id,
-            tipo: found.tipo,
-            antes_url: found.antes_url,
-            despues_url: found.despues_url,
-            foto_url: found.foto_url,
             orden: found.orden,
             publicado: found.publicado,
+            imagenes: found.imagenes,
           });
         }
       } else if (categoriasList.length > 0) {
@@ -135,10 +129,6 @@ export default function TrabajoForm() {
 
   function set<K extends keyof TrabajoInput>(key: K, value: TrabajoInput[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
-  }
-
-  function handleTipoChange(tipo: TipoTrabajo) {
-    setForm((prev) => ({ ...prev, tipo, antes_url: null, despues_url: null, foto_url: null }));
   }
 
   async function handleSubmit(e: FormEvent) {
@@ -211,36 +201,7 @@ export default function TrabajoForm() {
               </select>
             </label>
 
-            <div className="field">
-              Tipo de foto
-              <div className="segmented">
-                <button
-                  type="button"
-                  className={form.tipo === 'antes_despues' ? 'active' : ''}
-                  onClick={() => handleTipoChange('antes_despues')}
-                >
-                  Antes / después
-                </button>
-                <button
-                  type="button"
-                  className={form.tipo === 'foto' ? 'active' : ''}
-                  onClick={() => handleTipoChange('foto')}
-                >
-                  Foto única
-                </button>
-              </div>
-            </div>
-
-            {form.tipo === 'antes_despues' ? (
-              <div className="image-fields">
-                <ImageTile badge="ANTES" url={form.antes_url} onChange={(url) => set('antes_url', url)} />
-                <ImageTile badge="DESPUÉS" url={form.despues_url} onChange={(url) => set('despues_url', url)} />
-              </div>
-            ) : (
-              <div className="image-fields image-fields-single">
-                <ImageTile badge="FOTO" url={form.foto_url} onChange={(url) => set('foto_url', url)} />
-              </div>
-            )}
+            <ImageGallery imagenes={form.imagenes} onChange={(imagenes) => set('imagenes', imagenes)} />
 
             <label className="field">
               Orden de aparición
@@ -256,14 +217,7 @@ export default function TrabajoForm() {
 
             <div className="preview-block">
               <span className="preview-label">Así se va a ver en la web</span>
-              <WorkCard
-                categoria={categoriaNombre}
-                titulo={form.titulo}
-                tipo={form.tipo}
-                antesUrl={form.antes_url}
-                despuesUrl={form.despues_url}
-                fotoUrl={form.foto_url}
-              />
+              <WorkCard categoria={categoriaNombre} titulo={form.titulo} imagenes={form.imagenes} />
             </div>
           </form>
         )}

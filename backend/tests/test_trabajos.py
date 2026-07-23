@@ -3,8 +3,7 @@ def _payload(catalogo, **overrides):
         "categoria_id": catalogo["categoria_id"],
         "titulo": "Instalación de prueba",
         "zona_id": catalogo["zona_id"],
-        "tipo": "foto",
-        "foto_url": "https://example.com/foto.jpg",
+        "imagenes": [{"url": "https://example.com/foto.jpg", "etiqueta": None}],
         "orden": 0,
         "publicado": True,
     }
@@ -18,6 +17,7 @@ def test_create_and_list_public(client, auth_headers, catalogo):
     body = response.json()
     assert body["categoria"] == "Plomería y gas"
     assert body["zona"] == "Pinamar"
+    assert body["imagenes"] == [{"url": "https://example.com/foto.jpg", "etiqueta": None}]
 
     public = client.get("/api/trabajos")
     assert public.status_code == 200
@@ -36,8 +36,8 @@ def test_unpublished_not_in_public_list(client, auth_headers, catalogo):
     assert len(admin_list.json()) == 1
 
 
-def test_antes_despues_requires_both_urls(client, auth_headers, catalogo):
-    payload = _payload(catalogo, tipo="antes_despues", foto_url=None, antes_url="https://example.com/antes.jpg")
+def test_requires_at_least_one_image(client, auth_headers, catalogo):
+    payload = _payload(catalogo, imagenes=[])
     response = client.post("/api/admin/trabajos", json=payload, headers=auth_headers)
     assert response.status_code == 422
 
@@ -71,20 +71,32 @@ def test_delete_missing_returns_404(client, auth_headers):
     assert response.status_code == 404
 
 
-def test_switch_tipo_removes_old_image(client, auth_headers, catalogo):
+def test_gallery_order_and_labels_persist(client, auth_headers, catalogo):
+    payload = _payload(
+        catalogo,
+        imagenes=[
+            {"url": "https://x/a.jpg", "etiqueta": "antes"},
+            {"url": "https://x/b.jpg", "etiqueta": None},
+            {"url": "https://x/d.jpg", "etiqueta": "despues"},
+        ],
+    )
+    created = client.post("/api/admin/trabajos", json=payload, headers=auth_headers).json()
+    assert [img["url"] for img in created["imagenes"]] == ["https://x/a.jpg", "https://x/b.jpg", "https://x/d.jpg"]
+    assert [img["etiqueta"] for img in created["imagenes"]] == ["antes", None, "despues"]
+
+
+def test_update_replaces_gallery(client, auth_headers, catalogo):
     created = client.post(
         "/api/admin/trabajos",
-        json=_payload(catalogo, tipo="antes_despues", foto_url=None, antes_url="https://x/a.jpg", despues_url="https://x/d.jpg"),
+        json=_payload(catalogo, imagenes=[{"url": "https://x/a.jpg", "etiqueta": "antes"}]),
         headers=auth_headers,
     ).json()
 
     updated = client.put(
         f"/api/admin/trabajos/{created['id']}",
-        json=_payload(catalogo, tipo="foto"),
+        json=_payload(catalogo, imagenes=[{"url": "https://x/nueva.jpg", "etiqueta": None}]),
         headers=auth_headers,
     ).json()
 
-    assert updated["tipo"] == "foto"
-    assert updated["antes_url"] is None
-    assert updated["despues_url"] is None
-    assert updated["foto_url"] == "https://example.com/foto.jpg"
+    assert len(updated["imagenes"]) == 1
+    assert updated["imagenes"][0]["url"] == "https://x/nueva.jpg"

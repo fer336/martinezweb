@@ -42,15 +42,7 @@ export default function Preview() {
         ) : (
           <div className="preview-grid">
             {trabajos.map((t) => (
-              <WorkCard
-                key={t.id}
-                categoria={t.categoria}
-                titulo={t.titulo}
-                tipo={t.tipo}
-                antesUrl={t.antes_url}
-                despuesUrl={t.despues_url}
-                fotoUrl={t.foto_url}
-              />
+              <WorkCard key={t.id} categoria={t.categoria} titulo={t.titulo} imagenes={t.imagenes} />
             ))}
           </div>
         )}

@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ConfigDict, model_validator
 
-from app.models import RolImagen, Trabajo, TipoTrabajo
+from app.models import EtiquetaImagen, Trabajo
 
 
 class CategoriaOut(BaseModel):
@@ -19,25 +19,29 @@ class ZonaOut(BaseModel):
     nombre: str
 
 
+class TrabajoImagenIn(BaseModel):
+    url: str
+    etiqueta: EtiquetaImagen | None = None
+
+
+class TrabajoImagenOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    url: str
+    etiqueta: EtiquetaImagen | None
+
+
 class TrabajoWrite(BaseModel):
     categoria_id: int
     titulo: str
     zona_id: int | None = None
-    tipo: TipoTrabajo
-    antes_url: str | None = None
-    despues_url: str | None = None
-    foto_url: str | None = None
     orden: int = 0
     publicado: bool = True
+    imagenes: list[TrabajoImagenIn]
 
     @model_validator(mode="after")
-    def check_urls_match_tipo(self) -> "TrabajoWrite":
-        if self.tipo == TipoTrabajo.antes_despues:
-            if not self.antes_url or not self.despues_url:
-                raise ValueError("antes_url y despues_url son obligatorios para tipo antes_despues")
-        elif self.tipo == TipoTrabajo.foto:
-            if not self.foto_url:
-                raise ValueError("foto_url es obligatorio para tipo foto")
+    def check_al_menos_una_imagen(self) -> "TrabajoWrite":
+        if not self.imagenes:
+            raise ValueError("El trabajo necesita al menos una imagen")
         return self
 
 
@@ -48,16 +52,12 @@ class TrabajoOut(BaseModel):
     titulo: str
     zona_id: int | None
     zona: str | None
-    tipo: TipoTrabajo
-    antes_url: str | None
-    despues_url: str | None
-    foto_url: str | None
     orden: int
     publicado: bool
+    imagenes: list[TrabajoImagenOut]
 
     @classmethod
     def from_model(cls, trabajo: Trabajo) -> "TrabajoOut":
-        por_rol = {img.rol: img.url for img in trabajo.imagenes}
         return cls(
             id=trabajo.id,
             categoria_id=trabajo.categoria_id,
@@ -65,12 +65,9 @@ class TrabajoOut(BaseModel):
             titulo=trabajo.titulo,
             zona_id=trabajo.zona_id,
             zona=trabajo.zona.nombre if trabajo.zona else None,
-            tipo=trabajo.tipo,
-            antes_url=por_rol.get(RolImagen.antes),
-            despues_url=por_rol.get(RolImagen.despues),
-            foto_url=por_rol.get(RolImagen.foto),
             orden=trabajo.orden,
             publicado=trabajo.publicado,
+            imagenes=[TrabajoImagenOut.model_validate(img) for img in trabajo.imagenes],
         )
 
 

@@ -8,7 +8,7 @@ import asyncio
 from sqlalchemy import select
 
 from app.db import SessionLocal
-from app.models import Categoria, RolImagen, Trabajo, TrabajoImagen, TipoTrabajo, Zona
+from app.models import Categoria, EtiquetaImagen, Trabajo, TrabajoImagen, Zona
 
 SITE_BASE = "https://fer336.github.io/martinezweb"
 
@@ -20,25 +20,22 @@ SEED = [
         "categoria": "Reparación de bombas",
         "titulo": "Cambio de motor en bomba Rowa",
         "zona": "Cariló",
-        "tipo": TipoTrabajo.antes_despues,
-        "imagenes": {
-            RolImagen.antes: f"{SITE_BASE}/assets/trabajos/placeholder-antes.svg",
-            RolImagen.despues: f"{SITE_BASE}/assets/trabajos/placeholder-despues.svg",
-        },
+        "imagenes": [
+            (f"{SITE_BASE}/assets/trabajos/placeholder-antes.svg", EtiquetaImagen.antes),
+            (f"{SITE_BASE}/assets/trabajos/placeholder-despues.svg", EtiquetaImagen.despues),
+        ],
     },
     {
         "categoria": "Plomería y gas",
         "titulo": "Reparación de cañerías e instalación de artefactos",
         "zona": "Valeria del Mar",
-        "tipo": TipoTrabajo.foto,
-        "imagenes": {RolImagen.foto: f"{SITE_BASE}/assets/trabajos/placeholder-trabajo.svg"},
+        "imagenes": [(f"{SITE_BASE}/assets/trabajos/placeholder-trabajo.svg", None)],
     },
     {
         "categoria": "Plomería y gas",
         "titulo": "Instalación de gas para vivienda",
         "zona": "Ostende",
-        "tipo": TipoTrabajo.foto,
-        "imagenes": {RolImagen.foto: f"{SITE_BASE}/assets/trabajos/placeholder-trabajo.svg"},
+        "imagenes": [(f"{SITE_BASE}/assets/trabajos/placeholder-trabajo.svg", None)],
     },
 ]
 
@@ -69,12 +66,11 @@ async def main() -> None:
                 categoria_id=categorias[data["categoria"]].id,
                 titulo=data["titulo"],
                 zona_id=zonas[data["zona"]].id if data["zona"] else None,
-                tipo=data["tipo"],
                 orden=orden,
                 publicado=True,
             )
-            for rol, url in data["imagenes"].items():
-                trabajo.imagenes.append(TrabajoImagen(rol=rol, url=url))
+            for i, (url, etiqueta) in enumerate(data["imagenes"]):
+                trabajo.imagenes.append(TrabajoImagen(url=url, etiqueta=etiqueta, orden=i))
             db.add(trabajo)
         await db.commit()
         print(f"Cargados {len(CATEGORIAS)} categorías, {len(ZONAS)} zonas y {len(SEED)} trabajos de ejemplo.")

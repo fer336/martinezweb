@@ -1,21 +1,15 @@
 import enum
 from datetime import datetime
 
-from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, Integer, String, UniqueConstraint, func
+from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, Integer, String, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db import Base
 
 
-class TipoTrabajo(str, enum.Enum):
-    antes_despues = "antes_despues"
-    foto = "foto"
-
-
-class RolImagen(str, enum.Enum):
+class EtiquetaImagen(str, enum.Enum):
     antes = "antes"
     despues = "despues"
-    foto = "foto"
 
 
 class Categoria(Base):
@@ -43,7 +37,6 @@ class Trabajo(Base):
     categoria_id: Mapped[int] = mapped_column(ForeignKey("categorias.id"))
     titulo: Mapped[str] = mapped_column(String(200))
     zona_id: Mapped[int | None] = mapped_column(ForeignKey("zonas.id"), nullable=True)
-    tipo: Mapped[TipoTrabajo] = mapped_column(Enum(TipoTrabajo))
     orden: Mapped[int] = mapped_column(Integer, default=0)
     publicado: Mapped[bool] = mapped_column(Boolean, default=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
@@ -54,7 +47,10 @@ class Trabajo(Base):
     categoria: Mapped[Categoria] = relationship(back_populates="trabajos", lazy="selectin")
     zona: Mapped[Zona | None] = relationship(back_populates="trabajos", lazy="selectin")
     imagenes: Mapped[list["TrabajoImagen"]] = relationship(
-        back_populates="trabajo", cascade="all, delete-orphan", lazy="selectin"
+        back_populates="trabajo",
+        cascade="all, delete-orphan",
+        lazy="selectin",
+        order_by="TrabajoImagen.orden",
     )
 
 
@@ -72,12 +68,12 @@ class SitioConfig(Base):
 
 class TrabajoImagen(Base):
     __tablename__ = "trabajo_imagenes"
-    __table_args__ = (UniqueConstraint("trabajo_id", "rol", name="uq_trabajo_imagen_rol"),)
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     trabajo_id: Mapped[int] = mapped_column(ForeignKey("trabajos.id", ondelete="CASCADE"))
-    rol: Mapped[RolImagen] = mapped_column(Enum(RolImagen))
     url: Mapped[str] = mapped_column(String(500))
+    orden: Mapped[int] = mapped_column(Integer, default=0)
+    etiqueta: Mapped[EtiquetaImagen | None] = mapped_column(Enum(EtiquetaImagen, name="etiquetaimagen"), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     trabajo: Mapped[Trabajo] = relationship(back_populates="imagenes")
