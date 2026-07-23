@@ -19,7 +19,12 @@ let trabajos: Trabajo[] = [];
 if (apiUrl) {
   try {
     const res = await fetch(`${apiUrl}/trabajos`);
-    if (res.ok) trabajos = await res.json();
+    if (res.ok) {
+      const data = (await res.json()) as Trabajo[];
+      // Si el backend está a mitad de un redeploy puede devolver una forma
+      // vieja/inesperada; filtramos en vez de romper el build del sitio.
+      trabajos = data.filter((t) => Array.isArray(t.imagenes) && t.imagenes.length > 0);
+    }
   } catch {
     // La API no respondió durante el build: se muestra la sección vacía en vez de romper el sitio.
   }
