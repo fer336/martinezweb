@@ -35,10 +35,5 @@ class Settings(BaseSettings):
     s3_region: str = "us-east-1"
     s3_public_base_url: str = ""
 
-    github_token: str = ""
-    github_repo: str = "fer336/martinezweb"
-    github_workflow_file: str = "publish-content.yml"
-    github_ref: str = "main"
-
 
 settings = Settings()

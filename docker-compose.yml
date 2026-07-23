@@ -96,4 +96,4 @@ secrets:
   martinez_backend_env:
     external: true
     # Contiene DATABASE_URL, ADMIN_USERNAME, ADMIN_PASSWORD_HASH, JWT_SECRET,
-    # CORS_ORIGINS, S3_*, GITHUB_TOKEN, GITHUB_REPO, GITHUB_WORKFLOW_FILE, GITHUB_REF
+    # CORS_ORIGINS, S3_*

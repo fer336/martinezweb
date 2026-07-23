@@ -2,7 +2,7 @@ from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
-from app.routers import auth, catalog, config as config_router, publish, trabajos, uploads
+from app.routers import auth, catalog, config as config_router, trabajos, uploads
 
 app = FastAPI(
     title="Martínez Gas-Plomería · CMS API",
@@ -30,7 +30,6 @@ api.include_router(catalog.router)
 api.include_router(config_router.public_router)
 api.include_router(config_router.admin_router)
 api.include_router(uploads.router)
-api.include_router(publish.router)
 
 
 @api.get("/health")

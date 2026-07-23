@@ -13,7 +13,6 @@ function thumbOf(t: Trabajo): string | null {
 export default function TrabajosList() {
   const [trabajos, setTrabajos] = useState<Trabajo[]>([]);
   const [loading, setLoading] = useState(true);
-  const [publishState, setPublishState] = useState<'idle' | 'publishing' | 'ok' | 'error'>('idle');
   const { logout } = useAuth();
 
   async function reload() {
@@ -31,16 +30,6 @@ export default function TrabajosList() {
     if (!confirm(`¿Borrar "${titulo}"? No se puede deshacer.`)) return;
     await api.deleteTrabajo(id);
     reload();
-  }
-
-  async function handlePublish() {
-    setPublishState('publishing');
-    try {
-      await api.publish();
-      setPublishState('ok');
-    } catch {
-      setPublishState('error');
-    }
   }
 
   return (
@@ -67,11 +56,6 @@ export default function TrabajosList() {
               Vista previa
             </Link>
           </div>
-          <button className="btn btn-dark btn-block" onClick={handlePublish} disabled={publishState === 'publishing'}>
-            {publishState === 'publishing' ? 'Publicando…' : 'Publicar cambios en la web'}
-          </button>
-          {publishState === 'ok' && <p className="notice ok">Publicado. La web se actualiza en unos minutos.</p>}
-          {publishState === 'error' && <p className="notice error">No se pudo publicar. Revisá la conexión e intentá de nuevo.</p>}
         </div>
 
         {loading ? (

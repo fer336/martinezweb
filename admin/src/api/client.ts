@@ -92,10 +92,6 @@ export async function uploadImage(file: File, prefix: 'trabajos' | 'hero' = 'tra
   return data.url;
 }
 
-export function publish(): Promise<{ status: string }> {
-  return request('/admin/publish', { method: 'POST' });
-}
-
 export function getConfig(): Promise<{ hero_image_url: string | null }> {
   return request('/admin/config');
 }

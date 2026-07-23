@@ -91,8 +91,3 @@ class LoginIn(BaseModel):
 class TokenOut(BaseModel):
     access_token: str
     token_type: str = "bearer"
-
-
-class PublishOut(BaseModel):
-    status: str
-    workflow_run_url: str | None = None

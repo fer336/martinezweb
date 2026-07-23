@@ -51,7 +51,7 @@ export default function Portada() {
               que tiene ahora, subas la foto que subas.
             </p>
             <ImageTile badge="" url={heroUrl} prefix="hero" onChange={setHeroUrl} />
-            {saved && <p className="notice ok">Guardado. Publicá los cambios para que se vea en la web.</p>}
+            {saved && <p className="notice ok">Guardado. Ya se ve en la web.</p>}
           </div>
         )}
       </div>
