@@ -3,7 +3,7 @@ version: "3.8"
 services:
   # ⚙️ Backend API (FastAPI) — cms-martinez.qeva.xyz/api/*
   backend:
-    image: ghcr.io/fer336/martinezweb-backend:latest
+    image: ghcr.io/fer336/martinezweb-backend:1.3
     networks:
       - network_public
       - martinez-internal
@@ -35,7 +35,7 @@ services:
 
   # 🎨 Panel de administración (React) — cms-martinez.qeva.xyz
   admin:
-    image: ghcr.io/fer336/martinezweb-admin:latest
+    image: ghcr.io/fer336/martinezweb-admin:1.3
     networks:
       - network_public
       - martinez-internal
@@ -62,7 +62,7 @@ services:
 
   # 🌐 Sitio web público (Astro estático) — martinezplomeria.qeva.xyz
   web:
-    image: ghcr.io/fer336/martinezweb-web:latest
+    image: ghcr.io/fer336/martinezweb-web:1.1
     networks:
       - network_public
     deploy:

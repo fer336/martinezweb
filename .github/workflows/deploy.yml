@@ -17,10 +17,12 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Interpretar el tag del release
         id: release
@@ -85,6 +87,25 @@ jobs:
           tags: |
             ${{ env.IMAGE_PREFIX }}-backend:latest
             ${{ env.IMAGE_PREFIX }}-backend:${{ steps.release.outputs.version }}
+
+      - name: Pinnear el tag de imagen en docker-compose.yml
+        run: |
+          # Swarm no repullea ":latest" de forma confiable en cada redeploy,
+          # así que el compose siempre apunta a un tag de versión explícito.
+          if [ "${{ steps.release.outputs.build_web }}" = "true" ]; then
+            sed -i "s|image: ${{ env.IMAGE_PREFIX }}-web:.*|image: ${{ env.IMAGE_PREFIX }}-web:${{ steps.release.outputs.version }}|" docker-compose.yml
+          fi
+          if [ "${{ steps.release.outputs.build_sistema }}" = "true" ]; then
+            sed -i "s|image: ${{ env.IMAGE_PREFIX }}-admin:.*|image: ${{ env.IMAGE_PREFIX }}-admin:${{ steps.release.outputs.version }}|" docker-compose.yml
+            sed -i "s|image: ${{ env.IMAGE_PREFIX }}-backend:.*|image: ${{ env.IMAGE_PREFIX }}-backend:${{ steps.release.outputs.version }}|" docker-compose.yml
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docker-compose.yml
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(deploy): pin imagen a ${{ github.event.release.tag_name }}"
+            git push origin HEAD:main
+          fi
 
   deploy:
     needs: build-and-push
