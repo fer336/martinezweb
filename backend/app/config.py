@@ -25,7 +25,7 @@ class Settings(BaseSettings):
 
     github_token: str = ""
     github_repo: str = "fer336/martinezweb"
-    github_workflow_file: str = "deploy.yml"
+    github_workflow_file: str = "publish-content.yml"
     github_ref: str = "main"
 
 
