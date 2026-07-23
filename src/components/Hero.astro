@@ -6,19 +6,7 @@ import { withBase } from '../lib/url.js';
 const { variant = 1 } = Astro.props;
 const wa = `https://wa.me/${site.whatsapp}?text=Hola,%20quiero%20consultar%20por%20un%20service%20de%20bomba`;
 
-const apiUrl = import.meta.env.PUBLIC_API_URL;
-let heroImage = withBase('/assets/van.webp');
-if (apiUrl) {
-  try {
-    const res = await fetch(`${apiUrl}/config`);
-    if (res.ok) {
-      const data = await res.json();
-      if (data.hero_image_url) heroImage = data.hero_image_url;
-    }
-  } catch {
-    // la API no respondió durante el build: se usa la foto local de siempre.
-  }
-}
+const heroImage = withBase('/assets/van.webp');
 ---
 {variant === 1 && (
 <section style="background:#fff;border-bottom:1px solid #ebebe6;padding:56px 0 64px">
@@ -36,7 +24,7 @@ if (apiUrl) {
       </div>
     </div>
     <div class="hero-media">
-      <img src={heroImage} alt="Vehículo de Martínez Gas-Plomería, service oficial Rowa y Grundfos, en Pinamar" class="hero-img">
+      <img id="hero-img" src={heroImage} alt="Vehículo de Martínez Gas-Plomería, service oficial Rowa y Grundfos, en Pinamar" class="hero-img">
       <div class="hero-badge">EN PINAMAR Y LA COSTA</div>
     </div>
   </div>
@@ -74,3 +62,18 @@ if (apiUrl) {
   </div>
 </section>
 )}
+
+<script>
+  const apiUrl = import.meta.env.PUBLIC_API_URL;
+  const heroImg = document.getElementById('hero-img') as HTMLImageElement | null;
+  if (apiUrl && heroImg) {
+    fetch(`${apiUrl}/config`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.hero_image_url) heroImg.src = data.hero_image_url;
+      })
+      .catch(() => {
+        // La API no respondió: se queda con la foto local de siempre.
+      });
+  }
+</script>

@@ -1,34 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FinalCta from '../components/FinalCta.astro';
-
-interface TrabajoImagen {
-  url: string;
-  etiqueta: 'antes' | 'despues' | null;
-}
-
-interface Trabajo {
-  id: number;
-  categoria: string;
-  titulo: string;
-  imagenes: TrabajoImagen[];
-}
-
-const apiUrl = import.meta.env.PUBLIC_API_URL;
-let trabajos: Trabajo[] = [];
-if (apiUrl) {
-  try {
-    const res = await fetch(`${apiUrl}/trabajos`);
-    if (res.ok) {
-      const data = (await res.json()) as Trabajo[];
-      // Si el backend está a mitad de un redeploy puede devolver una forma
-      // vieja/inesperada; filtramos en vez de romper el build del sitio.
-      trabajos = data.filter((t) => Array.isArray(t.imagenes) && t.imagenes.length > 0);
-    }
-  } catch {
-    // La API no respondió durante el build: se muestra la sección vacía en vez de romper el sitio.
-  }
-}
 ---
 <BaseLayout
   title="Trabajos realizados · Martínez Gas-Plomería Pinamar"
@@ -44,30 +16,8 @@ if (apiUrl) {
 
   <section>
     <div class="wrap">
-      <div class="work-grid">
-        {trabajos.map(t => (
-          <div class="work-card">
-            <button type="button" class="work-gallery" data-imagenes={JSON.stringify(t.imagenes)} data-titulo={t.titulo} aria-label={`Ver fotos de ${t.titulo} en grande`}>
-              {t.imagenes.map((img, i) => (
-                <div class:list={['work-slide', i === 0 && 'is-active']}>
-                  <img
-                    src={img.url}
-                    alt={img.etiqueta === 'antes' ? `Antes: ${t.titulo}` : img.etiqueta === 'despues' ? `Después: ${t.titulo}` : t.titulo}
-                    loading="lazy"
-                  >
-                  {img.etiqueta && <span class="badge">{img.etiqueta === 'antes' ? 'ANTES' : 'DESPUÉS'}</span>}
-                </div>
-              ))}
-            </button>
-            <div class="work-info">
-              <span style="font-family:ui-monospace,monospace;font-size:10.5px;font-weight:700;letter-spacing:.1em;color:var(--yellow-ink)">{t.categoria.toUpperCase()}</span>
-              <strong style="font-size:15.5px">{t.titulo}</strong>
-            </div>
-          </div>
-        ))}
-        {trabajos.length === 0 && (
-          <p style="color:#888;font-size:14.5px">Estamos cargando las fotos de los últimos trabajos — volvé a pasar pronto.</p>
-        )}
+      <div class="work-grid" id="work-grid">
+        <p id="work-grid-empty" style="color:#888;font-size:14.5px">Estamos cargando las fotos de los últimos trabajos…</p>
       </div>
     </div>
   </section>
@@ -92,36 +42,103 @@ if (apiUrl) {
     etiqueta: 'antes' | 'despues' | null;
   }
 
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const galleries = document.querySelectorAll<HTMLElement>('.work-gallery');
-  const paused = new Set<HTMLElement>();
-
-  if (!reduceMotion) {
-    galleries.forEach((gallery) => {
-      gallery.addEventListener('mouseenter', () => paused.add(gallery));
-      gallery.addEventListener('mouseleave', () => paused.delete(gallery));
-    });
-    setInterval(() => {
-      galleries.forEach((gallery) => {
-        if (paused.has(gallery)) return;
-        const slides = gallery.querySelectorAll<HTMLElement>('.work-slide');
-        if (slides.length < 2) return;
-        const activeIndex = [...slides].findIndex((s) => s.classList.contains('is-active'));
-        slides[activeIndex]?.classList.remove('is-active');
-        slides[(activeIndex + 1) % slides.length].classList.add('is-active');
-      });
-    }, 2000);
+  interface Trabajo {
+    id: number;
+    categoria: string;
+    titulo: string;
+    imagenes: TrabajoImagen[];
   }
 
-  const lightbox = document.getElementById('lightbox') as HTMLDialogElement | null;
-  const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement | null;
-  const lightboxBadge = document.getElementById('lightbox-badge');
-  const lightboxCounter = document.getElementById('lightbox-counter');
-  const prevBtn = lightbox?.querySelector<HTMLButtonElement>('.lightbox-prev');
-  const nextBtn = lightbox?.querySelector<HTMLButtonElement>('.lightbox-next');
-  const closeBtn = lightbox?.querySelector<HTMLButtonElement>('.lightbox-close');
+  const apiUrl = import.meta.env.PUBLIC_API_URL;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (lightbox && lightboxImg && lightboxBadge && lightboxCounter && prevBtn && nextBtn && closeBtn) {
+  function badgeLabel(etiqueta: TrabajoImagen['etiqueta']): string {
+    return etiqueta === 'antes' ? 'ANTES' : etiqueta === 'despues' ? 'DESPUÉS' : '';
+  }
+
+  function imgAlt(etiqueta: TrabajoImagen['etiqueta'], titulo: string): string {
+    return etiqueta === 'antes' ? `Antes: ${titulo}` : etiqueta === 'despues' ? `Después: ${titulo}` : titulo;
+  }
+
+  function buildCard(t: Trabajo): HTMLElement {
+    const card = document.createElement('div');
+    card.className = 'work-card';
+
+    const gallery = document.createElement('button');
+    gallery.type = 'button';
+    gallery.className = 'work-gallery';
+    gallery.dataset.imagenes = JSON.stringify(t.imagenes);
+    gallery.dataset.titulo = t.titulo;
+    gallery.setAttribute('aria-label', `Ver fotos de ${t.titulo} en grande`);
+
+    t.imagenes.forEach((img, i) => {
+      const slide = document.createElement('div');
+      slide.className = i === 0 ? 'work-slide is-active' : 'work-slide';
+
+      const image = document.createElement('img');
+      image.src = img.url;
+      image.loading = 'lazy';
+      image.alt = imgAlt(img.etiqueta, t.titulo);
+      slide.appendChild(image);
+
+      if (img.etiqueta) {
+        const badge = document.createElement('span');
+        badge.className = 'badge';
+        badge.textContent = badgeLabel(img.etiqueta);
+        slide.appendChild(badge);
+      }
+
+      gallery.appendChild(slide);
+    });
+
+    const info = document.createElement('div');
+    info.className = 'work-info';
+
+    const eyebrow = document.createElement('span');
+    eyebrow.style.cssText =
+      'font-family:ui-monospace,monospace;font-size:10.5px;font-weight:700;letter-spacing:.1em;color:var(--yellow-ink)';
+    eyebrow.textContent = t.categoria.toUpperCase();
+
+    const title = document.createElement('strong');
+    title.style.fontSize = '15.5px';
+    title.textContent = t.titulo;
+
+    info.append(eyebrow, title);
+    card.append(gallery, info);
+    return card;
+  }
+
+  function setupGalleries() {
+    const galleries = [...document.querySelectorAll<HTMLElement>('.work-gallery')];
+    const paused = new Set<HTMLElement>();
+
+    if (!reduceMotion) {
+      galleries.forEach((gallery) => {
+        gallery.addEventListener('mouseenter', () => paused.add(gallery));
+        gallery.addEventListener('mouseleave', () => paused.delete(gallery));
+      });
+      setInterval(() => {
+        galleries.forEach((gallery) => {
+          if (paused.has(gallery)) return;
+          const slides = gallery.querySelectorAll<HTMLElement>('.work-slide');
+          if (slides.length < 2) return;
+          const activeIndex = [...slides].findIndex((s) => s.classList.contains('is-active'));
+          slides[activeIndex]?.classList.remove('is-active');
+          slides[(activeIndex + 1) % slides.length].classList.add('is-active');
+        });
+      }, 2000);
+    }
+
+    const lightbox = document.getElementById('lightbox') as HTMLDialogElement | null;
+    const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement | null;
+    const lightboxBadge = document.getElementById('lightbox-badge');
+    const lightboxCounter = document.getElementById('lightbox-counter');
+    const prevBtn = lightbox?.querySelector<HTMLButtonElement>('.lightbox-prev');
+    const nextBtn = lightbox?.querySelector<HTMLButtonElement>('.lightbox-next');
+    const closeBtn = lightbox?.querySelector<HTMLButtonElement>('.lightbox-close');
+
+    if (!(lightbox && lightboxImg && lightboxBadge && lightboxCounter && prevBtn && nextBtn && closeBtn)) return;
+
     let imagenes: TrabajoImagen[] = [];
     let titulo = '';
     let index = 0;
@@ -129,9 +146,8 @@ if (apiUrl) {
     function render() {
       const img = imagenes[index];
       lightboxImg!.src = img.url;
-      lightboxImg!.alt =
-        img.etiqueta === 'antes' ? `Antes: ${titulo}` : img.etiqueta === 'despues' ? `Después: ${titulo}` : titulo;
-      lightboxBadge!.textContent = img.etiqueta === 'antes' ? 'ANTES' : img.etiqueta === 'despues' ? 'DESPUÉS' : '';
+      lightboxImg!.alt = imgAlt(img.etiqueta, titulo);
+      lightboxBadge!.textContent = badgeLabel(img.etiqueta);
       lightboxBadge!.hidden = !img.etiqueta;
       const multiple = imagenes.length > 1;
       prevBtn!.hidden = !multiple;
@@ -168,4 +184,27 @@ if (apiUrl) {
       if (e.key === 'ArrowRight') nextBtn.click();
     });
   }
+
+  async function loadTrabajos() {
+    const grid = document.getElementById('work-grid');
+    if (!grid || !apiUrl) return;
+    try {
+      const res = await fetch(`${apiUrl}/trabajos`);
+      if (!res.ok) return;
+      const data = (await res.json()) as Trabajo[];
+      const trabajos = data.filter((t) => Array.isArray(t.imagenes) && t.imagenes.length > 0);
+      if (trabajos.length === 0) {
+        const empty = document.getElementById('work-grid-empty');
+        if (empty) empty.textContent = 'Todavía no publicamos trabajos — volvé a pasar pronto.';
+        return;
+      }
+      document.getElementById('work-grid-empty')?.remove();
+      trabajos.forEach((t) => grid.appendChild(buildCard(t)));
+      setupGalleries();
+    } catch {
+      // La API no respondió: se queda el mensaje de "cargando" visible.
+    }
+  }
+
+  loadTrabajos();
 </script>
