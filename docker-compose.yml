@@ -60,6 +60,17 @@ services:
         - "traefik.http.routers.martinez-admin.priority=1"
         - "traefik.http.services.martinez-admin.loadbalancer.server.port=80"
 
+        # Redirect 301 del dominio viejo (cms-martinez.qeva.xyz) al definitivo
+        - "traefik.http.routers.martinez-cms-old.rule=Host(`cms-martinez.qeva.xyz`)"
+        - "traefik.http.routers.martinez-cms-old.entrypoints=websecure"
+        - "traefik.http.routers.martinez-cms-old.tls.certresolver=letsencryptresolver"
+        - "traefik.http.routers.martinez-cms-old.priority=1"
+        - "traefik.http.routers.martinez-cms-old.service=martinez-admin"
+        - "traefik.http.routers.martinez-cms-old.middlewares=martinez-cms-old-redirect"
+        - "traefik.http.middlewares.martinez-cms-old-redirect.redirectregex.regex=^/(.*)"
+        - "traefik.http.middlewares.martinez-cms-old-redirect.redirectregex.replacement=https://cms.martinezgasplomeria.com/$${1}"
+        - "traefik.http.middlewares.martinez-cms-old-redirect.redirectregex.permanent=true"
+
   # 🌐 Sitio web público (Astro estático) — martinezgasplomeria.com
   web:
     image: ghcr.io/fer336/martinezweb-web:1.6
@@ -83,6 +94,29 @@ services:
         - "traefik.http.routers.martinez-web.tls.certresolver=letsencryptresolver"
         - "traefik.http.routers.martinez-web.priority=1"
         - "traefik.http.services.martinez-web.loadbalancer.server.port=80"
+
+        # Redirect 301 del dominio viejo (martinezplomeria.qeva.xyz) al definitivo,
+        # para no perder el SEO ya indexado y no dejar links viejos rotos.
+        - "traefik.http.routers.martinez-web-old.rule=Host(`martinezplomeria.qeva.xyz`)"
+        - "traefik.http.routers.martinez-web-old.entrypoints=websecure"
+        - "traefik.http.routers.martinez-web-old.tls.certresolver=letsencryptresolver"
+        - "traefik.http.routers.martinez-web-old.priority=1"
+        - "traefik.http.routers.martinez-web-old.service=martinez-web"
+        - "traefik.http.routers.martinez-web-old.middlewares=martinez-web-old-redirect"
+        - "traefik.http.middlewares.martinez-web-old-redirect.redirectregex.regex=^/(.*)"
+        - "traefik.http.middlewares.martinez-web-old-redirect.redirectregex.replacement=https://martinezgasplomeria.com/$${1}"
+        - "traefik.http.middlewares.martinez-web-old-redirect.redirectregex.permanent=true"
+
+        # Redirect 301 de la página de Grundfos, unificada con la de Rowa (ya no se genera)
+        - "traefik.http.routers.martinez-web-grundfos-redirect.rule=Host(`martinezgasplomeria.com`) && PathPrefix(`/service-bombas-grundfos-pinamar`)"
+        - "traefik.http.routers.martinez-web-grundfos-redirect.entrypoints=websecure"
+        - "traefik.http.routers.martinez-web-grundfos-redirect.tls.certresolver=letsencryptresolver"
+        - "traefik.http.routers.martinez-web-grundfos-redirect.priority=200"
+        - "traefik.http.routers.martinez-web-grundfos-redirect.service=martinez-web"
+        - "traefik.http.routers.martinez-web-grundfos-redirect.middlewares=martinez-grundfos-redirect"
+        - "traefik.http.middlewares.martinez-grundfos-redirect.redirectregex.regex=^/service-bombas-grundfos-pinamar.*"
+        - "traefik.http.middlewares.martinez-grundfos-redirect.redirectregex.replacement=https://martinezgasplomeria.com/service-bombas-rowa-pinamar/"
+        - "traefik.http.middlewares.martinez-grundfos-redirect.redirectregex.permanent=true"
 
 networks:
   network_public:
