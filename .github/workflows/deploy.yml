@@ -10,8 +10,8 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_PREFIX: ghcr.io/${{ github.repository_owner }}/martinezweb
-  PUBLIC_API_URL: https://cms-martinez.qeva.xyz/api
-  VITE_API_URL: https://cms-martinez.qeva.xyz/api
+  PUBLIC_API_URL: https://cms.martinezgasplomeria.com/api
+  VITE_API_URL: https://cms.martinezgasplomeria.com/api
 
 jobs:
   build-and-push:

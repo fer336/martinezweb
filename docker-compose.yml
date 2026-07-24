@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  # ⚙️ Backend API (FastAPI) — cms-martinez.qeva.xyz/api/*
+  # ⚙️ Backend API (FastAPI) — cms.martinezgasplomeria.com/api/*
   backend:
     image: ghcr.io/fer336/martinezweb-backend:1.5
     networks:
@@ -26,14 +26,14 @@ services:
 
         # Todo el backend cuelga de /api (auth, admin, trabajos, config,
         # health, docs) — una sola regla de path alcanza.
-        - "traefik.http.routers.martinez-backend.rule=Host(`cms-martinez.qeva.xyz`) && PathPrefix(`/api`)"
+        - "traefik.http.routers.martinez-backend.rule=Host(`cms.martinezgasplomeria.com`) && PathPrefix(`/api`)"
         - "traefik.http.routers.martinez-backend.entrypoints=websecure"
         - "traefik.http.routers.martinez-backend.tls.certresolver=letsencryptresolver"
         - "traefik.http.routers.martinez-backend.priority=100"
 
         - "traefik.http.services.martinez-backend.loadbalancer.server.port=8000"
 
-  # 🎨 Panel de administración (React) — cms-martinez.qeva.xyz
+  # 🎨 Panel de administración (React) — cms.martinezgasplomeria.com
   admin:
     image: ghcr.io/fer336/martinezweb-admin:1.5
     networks:
@@ -54,13 +54,13 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.docker.network=network_public"
-        - "traefik.http.routers.martinez-admin.rule=Host(`cms-martinez.qeva.xyz`)"
+        - "traefik.http.routers.martinez-admin.rule=Host(`cms.martinezgasplomeria.com`)"
         - "traefik.http.routers.martinez-admin.entrypoints=websecure"
         - "traefik.http.routers.martinez-admin.tls.certresolver=letsencryptresolver"
         - "traefik.http.routers.martinez-admin.priority=1"
         - "traefik.http.services.martinez-admin.loadbalancer.server.port=80"
 
-  # 🌐 Sitio web público (Astro estático) — martinezplomeria.qeva.xyz
+  # 🌐 Sitio web público (Astro estático) — martinezgasplomeria.com
   web:
     image: ghcr.io/fer336/martinezweb-web:1.5
     networks:
@@ -78,7 +78,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.docker.network=network_public"
-        - "traefik.http.routers.martinez-web.rule=Host(`martinezplomeria.qeva.xyz`)"
+        - "traefik.http.routers.martinez-web.rule=Host(`martinezgasplomeria.com`)"
         - "traefik.http.routers.martinez-web.entrypoints=websecure"
         - "traefik.http.routers.martinez-web.tls.certresolver=letsencryptresolver"
         - "traefik.http.routers.martinez-web.priority=1"
