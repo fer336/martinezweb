@@ -73,7 +73,7 @@ services:
 
   # 🌐 Sitio web público (Astro estático) — martinezgasplomeria.com
   web:
-    image: ghcr.io/fer336/martinezweb-web:1.6
+    image: ghcr.io/fer336/martinezweb-web:1.7
     networks:
       - network_public
     deploy:
