@@ -21,16 +21,6 @@ const faqJsonLd = {
   mainEntity: faqs.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
 };
 const wa = `https://wa.me/${site.whatsapp}?text=Hola,%20quiero%20consultar%20por%20un%20service%20de%20bomba`;
-
-const serviciosDestacados = [
-  {
-    slug: 'service-bombas-rowa-pinamar',
-    oficial: true,
-    t: 'Service de Bombas Rowa y Grundfos',
-    d: 'Diagnóstico, reparación y mantenimiento de bombas presurizadoras Rowa y Grundfos.',
-  },
-  servicios.find(s => s.slug === 'reparacion-bombas-agua'),
-];
 ---
 <BaseLayout
   title="Service de bombas de agua en Pinamar · Martínez Gas-Plomería"
@@ -65,7 +55,7 @@ const serviciosDestacados = [
         <div style="display:inline-flex;align-items:center;gap:8px;background:var(--yellow);color:#111;font-weight:800;font-size:13.5px;padding:9px 16px;border-radius:999px;align-self:flex-start">6 meses de garantía en reparación y recambio completo de equipo</div>
       </div>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px">
-        {serviciosDestacados.map(s => (
+        {servicios.map(s => (
           <a href={withBase(`/${s.slug}/`)} style={`border-radius:12px;padding:26px;display:flex;flex-direction:column;gap:10px;transition:all .2s;${s.oficial?'background:#111;color:#fff':'background:#fff;border:1px solid var(--border)'}`}>
             {s.oficial && <span class="tag">SERVICE OFICIAL</span>}
             <strong style="font-family:var(--font-display);font-size:21px">{s.t}</strong>

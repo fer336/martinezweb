@@ -107,17 +107,6 @@ services:
         - "traefik.http.middlewares.martinez-web-old-redirect.redirectregex.replacement=https://martinezgasplomeria.com/$${1}"
         - "traefik.http.middlewares.martinez-web-old-redirect.redirectregex.permanent=true"
 
-        # Redirect 301 de la página de Grundfos, unificada con la de Rowa (ya no se genera)
-        - "traefik.http.routers.martinez-web-grundfos-redirect.rule=Host(`martinezgasplomeria.com`) && PathPrefix(`/service-bombas-grundfos-pinamar`)"
-        - "traefik.http.routers.martinez-web-grundfos-redirect.entrypoints=websecure"
-        - "traefik.http.routers.martinez-web-grundfos-redirect.tls.certresolver=letsencryptresolver"
-        - "traefik.http.routers.martinez-web-grundfos-redirect.priority=200"
-        - "traefik.http.routers.martinez-web-grundfos-redirect.service=martinez-web"
-        - "traefik.http.routers.martinez-web-grundfos-redirect.middlewares=martinez-grundfos-redirect"
-        - "traefik.http.middlewares.martinez-grundfos-redirect.redirectregex.regex=^/service-bombas-grundfos-pinamar.*"
-        - "traefik.http.middlewares.martinez-grundfos-redirect.redirectregex.replacement=https://martinezgasplomeria.com/service-bombas-rowa-pinamar/"
-        - "traefik.http.middlewares.martinez-grundfos-redirect.redirectregex.permanent=true"
-
 networks:
   network_public:
     external: true

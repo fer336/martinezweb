@@ -1,10 +1,31 @@
 [
   {
     "slug": "service-bombas-rowa-pinamar",
-    "marca": "Rowa y Grundfos",
+    "marca": "Rowa",
     "oficial": true,
-    "t": "Service de Bombas Rowa y Grundfos",
-    "d": "Diagnóstico, reparación y mantenimiento de bombas presurizadoras Rowa y Grundfos."
+    "t": "Service de bombas Rowa",
+    "d": "Diagnóstico, reparación y mantenimiento de bombas presurizadoras Rowa.",
+    "sobreMarca": "Rowa es una de las marcas de bombas presurizadoras más elegidas en Argentina para uso residencial y comercial. Su punto fuerte es mantener una presión constante en toda la instalación, sin importar cuántas canillas o duchas estén abiertas al mismo tiempo.",
+    "beneficios": [
+      "Motor de alta eficiencia con sello mecánico de calidad, pensado para evitar pérdidas de agua.",
+      "Sistema de protección contra sobrecalentamiento y sobrecarga.",
+      "Arranque progresivo: genera presión de forma gradual, con menos vibración y más vida útil para la bomba y la instalación.",
+      "Modelos compactos para uso residencial y opciones más potentes para uso intensivo."
+    ]
+  },
+  {
+    "slug": "service-bombas-grundfos-pinamar",
+    "marca": "Grundfos",
+    "oficial": true,
+    "t": "Service de bombas Grundfos",
+    "d": "Atención especializada para equipos Grundfos de presión y elevación.",
+    "sobreMarca": "Grundfos es una empresa danesa con más de 75 años de trayectoria, considerada a nivel mundial como referente en soluciones de bombeo. Es una marca de alta gama, elegida especialmente cuando la eficiencia energética y la durabilidad a largo plazo son prioridad.",
+    "beneficios": [
+      "Una de las bombas más silenciosas del mercado, ideal para uso residencial.",
+      "Alta eficiencia energética: menor consumo eléctrico en el funcionamiento diario.",
+      "Instalación compacta y funcionamiento automático.",
+      "Solución sin necesidad de tanque de reserva elevado cuando la fachada o la estructura no lo permite."
+    ]
   },
   {
     "slug": "reparacion-bombas-agua",
