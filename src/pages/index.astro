@@ -134,16 +134,18 @@ const wa = `https://wa.me/${site.whatsapp}?text=Hola,%20quiero%20consultar%20por
         <h2 class="h2">También hacemos plomería y gas</h2>
       </div>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px">
-        <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:26px;display:flex;flex-direction:column;gap:8px">
+        <a href={withBase('/plomero-pinamar/')} style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:26px;display:flex;flex-direction:column;gap:8px">
           <span style="font-family:ui-monospace,monospace;font-size:11px;font-weight:700;letter-spacing:.12em;color:#888">PLOMERÍA</span>
-          <strong style="font-family:var(--font-display);font-size:20px">Personal matriculado</strong>
-          <span style="font-size:14.5px;line-height:1.55;color:#555">Instalación y reparación de artefactos, cañerías y conexiones. Trabajos domiciliarios y de obra.</span>
-        </div>
-        <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:26px;display:flex;flex-direction:column;gap:8px">
+          <strong style="font-family:var(--font-display);font-size:20px">Plomero en Pinamar</strong>
+          <span style="font-size:14.5px;line-height:1.55;color:#555">Destapaciones, reparación de pérdidas de agua, instalación de sanitarios y griferías, obra nueva y reformas de baño y cocina.</span>
+          <span style="font-weight:700;font-size:14px;margin-top:auto;color:var(--yellow-ink)">Ver página →</span>
+        </a>
+        <a href={withBase('/gasista-pinamar/')} style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:26px;display:flex;flex-direction:column;gap:8px">
           <span style="font-family:ui-monospace,monospace;font-size:11px;font-weight:700;letter-spacing:.12em;color:#888">GAS</span>
-          <strong style="font-family:var(--font-display);font-size:20px">Instalaciones y reparaciones</strong>
-          <span style="font-size:14.5px;line-height:1.55;color:#555">Trabajos de gas para hogares y comercios de la zona, coordinados junto al resto de la instalación.</span>
-        </div>
+          <strong style="font-family:var(--font-display);font-size:20px">Gasista matriculado en Pinamar</strong>
+          <span style="font-size:14.5px;line-height:1.55;color:#555">Instalación de gas domiciliaria, reparación de pérdidas, calefones y termotanques, habilitaciones ante la distribuidora.</span>
+          <span style="font-weight:700;font-size:14px;margin-top:auto;color:var(--yellow-ink)">Ver página →</span>
+        </a>
       </div>
     </div>
   </section>

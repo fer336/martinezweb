@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FinalCta from '../components/FinalCta.astro';
+import WaIcon from '../components/WaIcon.astro';
+import site from '../data/site.json';
+import { withBase } from '../lib/url.js';
+
+const servicios = [
+  'Instalación de gas domiciliaria',
+  'Reparación de fugas y pérdidas de gas',
+  'Calefones, termotanques y estufas',
+  'Habilitaciones y certificados ante Camuzzi u otra distribuidora',
+];
+const senales = [
+  'Olor a gas en algún ambiente de la casa.',
+  'La llama del calefón o la cocina es amarilla o anaranjada en vez de azul.',
+  'El calefón no enciende, se apaga solo o tarda en calentar.',
+  'Manchas de hollín cerca de un artefacto a gas.',
+  'Aumento repentino en el consumo de gas sin explicación.',
+];
+const faqs = [
+  { q: '¿Por qué importa que el gasista esté matriculado?', a: 'Una instalación de gas mal hecha es un riesgo real: pérdidas, intoxicación por monóxido de carbono o incendio. El gasista matriculado responde por su trabajo y lo hace cumpliendo las normas de seguridad vigentes.' },
+  { q: '¿Hacen la habilitación ante la distribuidora?', a: 'Sí, coordinamos la habilitación y los certificados correspondientes ante Camuzzi u otra distribuidora cuando el trabajo lo requiere.' },
+  { q: '¿Atienden urgencias por olor a gas?', a: 'Sí. Si sentís olor a gas, ventilá el ambiente, no enciendas nada y escribinos apenas puedas para coordinar una visita.' },
+];
+const faqJsonLd = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) };
+const wa = `https://wa.me/${site.whatsapp}?text=Hola,%20necesito%20un%20gasista%20matriculado`;
+---
+<BaseLayout
+  title="Gasista matriculado en Pinamar · Martínez Gas-Plomería"
+  description="Gasista matriculado en Pinamar: instalación de gas domiciliaria, reparación de pérdidas, calefones, termotanques y habilitaciones ante la distribuidora."
+  jsonld={faqJsonLd}
+>
+  <section style="background:var(--bg);border-bottom:1px solid #ebebe6">
+    <div class="wrap-narrow" style="display:flex;flex-direction:column;gap:16px">
+      <nav style="font-size:13px;color:#888;display:flex;gap:8px"><a href={withBase('/')} style="color:#888">Inicio</a><span>/</span><span style="color:#111;font-weight:600">Gasista matriculado</span></nav>
+      <span class="tag">GASISTA MATRICULADO</span>
+      <h1 style="font-size:clamp(30px,4.4vw,46px);line-height:1.08;text-wrap:pretty">Gasista matriculado en Pinamar</h1>
+      <p style="margin:0;font-size:17px;line-height:1.65;color:#444;text-wrap:pretty">Trabajamos con gasista matriculado, cumpliendo las normas de seguridad vigentes. Instalación de gas domiciliaria, reparación de pérdidas, calefones y termotanques, y habilitaciones ante la distribuidora en Pinamar y la Costa.</p>
+      <a href={wa} target="_blank" rel="noopener" class="btn btn-primary" style="align-self:flex-start;font-size:15px;padding:14px 22px"><WaIcon size={17} />Consultar por WhatsApp</a>
+    </div>
+  </section>
+  <section>
+    <div class="wrap-narrow" style="display:flex;flex-direction:column;gap:40px">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <h2 style="font-size:26px">Qué hacemos</h2>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          {servicios.map(x => (<div style="display:flex;gap:12px;align-items:baseline;background:var(--bg);border-radius:8px;padding:14px 18px"><span style="color:var(--yellow-ink);font-weight:700;flex:none">—</span><span style="font-size:15px;line-height:1.5">{x}</span></div>))}
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <h2 style="font-size:26px">Señales de que necesitás un gasista</h2>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          {senales.map(x => (<div style="display:flex;gap:12px;align-items:baseline;background:var(--bg);border-radius:8px;padding:14px 18px"><span style="color:var(--yellow-ink);font-weight:700;flex:none">—</span><span style="font-size:15px;line-height:1.5">{x}</span></div>))}
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <h2 style="font-size:26px">Por qué conviene un gasista matriculado</h2>
+        <p style="margin:0;font-size:15.5px;line-height:1.65;color:#444;text-wrap:pretty">Una instalación de gas no es un trabajo para resolver "a ojo": una conexión mal hecha puede terminar en una pérdida, una intoxicación por monóxido de carbono o un incendio. Trabajar con un gasista matriculado significa que la instalación se hace cumpliendo las normas de seguridad vigentes, y que alguien responde por ese trabajo.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <h2 style="font-size:26px">Preguntas frecuentes</h2>
+        {faqs.map(f => (<details style="padding:16px 20px"><summary style="font-size:15px"><span>{f.q}</span><span class="faq-chev">+</span></summary><p style="margin:10px 0 0;font-size:14.5px;line-height:1.6;color:#555">{f.a}</p></details>))}
+      </div>
+    </div>
+  </section>
+  <FinalCta title="¿Necesitás un gasista matriculado?" text="Escribinos por WhatsApp y contanos qué necesitás. Te respondemos y coordinamos la visita." msg="Hola,%20necesito%20un%20gasista%20matriculado" />
+</BaseLayout>
