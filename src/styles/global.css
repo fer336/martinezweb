@@ -78,6 +78,7 @@ details[open] .faq-chev{transform:rotate(45deg)}
 .hero-media{position:relative}
 .hero-img{width:100%;border-radius:12px;box-shadow:0 20px 40px -18px rgba(17,17,17,.35);aspect-ratio:4/3;object-fit:cover;object-position:center}
 .hero-badge{position:absolute;left:16px;bottom:-14px;background:#111;color:#fff;font-family:ui-monospace,monospace;font-size:12px;font-weight:600;letter-spacing:.08em;padding:10px 14px;border-left:4px solid var(--yellow);white-space:nowrap}
+.hero-img-placeholder{background:linear-gradient(135deg,#ececE6,#f5f5f0)}
 @media (max-width:700px){
   .hero-content{align-items:center;text-align:center}
   .hero-meta{justify-content:center}

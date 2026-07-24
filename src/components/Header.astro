@@ -7,7 +7,7 @@ const wa = `https://wa.me/${site.whatsapp}?text=Hola,%20quiero%20consultar%20por
 const p = Astro.url.pathname;
 const nav = [
   { href: '/', label: 'Inicio' },
-  { href: '/service-bombas-rowa-pinamar/', label: 'Service Rowa' },
+  { href: '/service-bombas-rowa-pinamar/', label: 'Service Rowa-Grundfos' },
   { href: '/trabajos/', label: 'Trabajos' },
   { href: '/#zonas', label: 'Zonas' },
   { href: '/#plomeria-gas', label: 'Plomería y Gas' },
@@ -30,3 +30,14 @@ const nav = [
     </nav>
   </div>
 </header>
+
+<script>
+  const navToggle = document.getElementById('nav-toggle') as HTMLInputElement | null;
+  if (navToggle) {
+    document.querySelectorAll('.header-link').forEach((link) => {
+      link.addEventListener('click', () => {
+        navToggle.checked = false;
+      });
+    });
+  }
+</script>
