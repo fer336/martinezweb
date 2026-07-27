@@ -16,8 +16,10 @@ from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.pool import StaticPool
 
 from app.db import Base, get_db
-from app.main import app
+from app.main import _general_storage, app
 from app.models import Categoria, Zona
+from app.rate_limit import limiter
+from app.routers.auth import _failed_logins
 
 engine = create_async_engine("sqlite+aiosqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool)
 TestSessionLocal = async_sessionmaker(engine, expire_on_commit=False)
@@ -30,6 +32,17 @@ async def _reset_db():
     yield
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
+
+
+@pytest.fixture(autouse=True)
+def _reset_rate_limiter():
+    # Sin esto, el estado de rate limiting (in-memory, vive en el proceso) se
+    # arrastra entre tests y un test puede empezar a fallar con 429 solo
+    # porque otro test anterior ya gastó parte de la cuota o de los intentos
+    # fallidos de login.
+    limiter.reset()
+    _general_storage.reset()
+    _failed_logins.clear()
 
 
 async def _override_get_db():
