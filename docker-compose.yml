@@ -95,6 +95,17 @@ services:
         - "traefik.http.routers.martinez-web.priority=1"
         - "traefik.http.services.martinez-web.loadbalancer.server.port=80"
 
+        # Redirect 301 de www al dominio canónico sin www.
+        - "traefik.http.routers.martinez-web-www.rule=Host(`www.martinezgasplomeria.com`)"
+        - "traefik.http.routers.martinez-web-www.entrypoints=websecure"
+        - "traefik.http.routers.martinez-web-www.tls.certresolver=letsencryptresolver"
+        - "traefik.http.routers.martinez-web-www.priority=1"
+        - "traefik.http.routers.martinez-web-www.service=martinez-web"
+        - "traefik.http.routers.martinez-web-www.middlewares=martinez-web-www-redirect"
+        - "traefik.http.middlewares.martinez-web-www-redirect.redirectregex.regex=^/(.*)"
+        - "traefik.http.middlewares.martinez-web-www-redirect.redirectregex.replacement=https://martinezgasplomeria.com/$${1}"
+        - "traefik.http.middlewares.martinez-web-www-redirect.redirectregex.permanent=true"
+
         # Redirect 301 del dominio viejo (martinezplomeria.qeva.xyz) al definitivo,
         # para no perder el SEO ya indexado y no dejar links viejos rotos.
         - "traefik.http.routers.martinez-web-old.rule=Host(`martinezplomeria.qeva.xyz`)"
