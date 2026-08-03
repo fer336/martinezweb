@@ -52,7 +52,7 @@ const business = {
   <meta property="og:locale" content="es_AR" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content={new URL(ogImage, Astro.site).toString()} />
-  <link rel="icon" href={withBase('/favicon.ico')} sizes="any" />
+  <link rel="icon" href={withBase('/favicon.ico')} sizes="32x32" />
   <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
   <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -60,6 +60,17 @@ const business = {
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script type="application/ld+json" set:html={JSON.stringify(business)} />
   {jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />}
+  {site.gaMeasurementId && (
+    <>
+      <script async src={`https://www.googletagmanager.com/gtag/js?id=${site.gaMeasurementId}`}></script>
+      <script define:vars={{ gaId: site.gaMeasurementId }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', gaId);
+      </script>
+    </>
+  )}
 </head>
 <body>
   <Header />
