@@ -13,6 +13,11 @@
       "Arranque progresivo: genera presión de forma gradual, con menos vibración y más vida útil para la bomba y la instalación.",
       "Algunos modelos incorporan tecnología inverter y conectividad para monitorear el equipo desde el celular.",
       "Modelos compactos para uso residencial y opciones más potentes para uso intensivo."
+    ],
+    "fallasComunes": "En bombas Rowa, las consultas más frecuentes que recibimos son por el capacitor de arranque (la bomba zumba pero no gira), el presostato o sensor de presión desajustado (arranca y corta seguido, sin llegar a estabilizar) y la protección térmica disparada por sobrecalentamiento del motor. En la mayoría de los casos el diagnóstico se hace sin desarmar el equipo por completo, escuchando el comportamiento y midiendo presión y consumo antes de decidir qué pieza reemplazar.",
+    "faqsMarca": [
+      { "q": "¿Reparan cualquier modelo de bomba Rowa?", "a": "Sí, trabajamos con toda la línea residencial y comercial de Rowa, desde presurizadoras simples hasta modelos con protección electrónica y arranque progresivo." },
+      { "q": "¿Usan repuestos originales Rowa?", "a": "Sí. Antes de cambiar una pieza confirmamos con el diagnóstico que sea la causa real de la falla, y usamos repuesto original para el modelo exacto de tu equipo." }
     ]
   },
   {
@@ -29,6 +34,11 @@
       "Instalación compacta y funcionamiento automático.",
       "Los modelos con variador de velocidad integrado (línea SCALA) combinan bomba, sensor de presión y electrónica en un solo equipo compacto y autocebante — por eso un diagnóstico mal hecho en la parte electrónica sale caro.",
       "Solución sin necesidad de tanque de reserva elevado cuando la fachada o la estructura no lo permite."
+    ],
+    "fallasComunes": "En los modelos Grundfos con electrónica integrada (línea SCALA), la falla más habitual no es mecánica sino del sensor de presión o la placa electrónica: el equipo arranca y corta de forma errática, o directamente no reconoce que hay demanda de agua. Ahí un diagnóstico apurado termina en un cambio de bomba completo cuando muchas veces alcanza con la placa o el sensor. En los modelos sin electrónica integrada, las consultas más comunes son por ruido de rodamientos y pérdida de presión por desgaste del sello mecánico.",
+    "faqsMarca": [
+      { "q": "¿Reparan la línea Grundfos SCALA con electrónica integrada?", "a": "Sí. Estos modelos combinan bomba, sensor de presión y placa electrónica en un solo equipo, así que el diagnóstico es más específico — primero descartamos la parte electrónica antes de tocar la mecánica, para no cambiar de más." },
+      { "q": "¿Usan repuestos originales Grundfos?", "a": "Sí, trabajamos con repuestos originales para el modelo exacto de tu equipo, incluidas las placas y sensores de los modelos con electrónica integrada." }
     ]
   },
   {

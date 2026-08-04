@@ -8,7 +8,9 @@
       "Equipos que quedan meses sin uso y no arrancan al abrir la casa.",
       "Cortes intermitentes por instalaciones eléctricas al límite.",
       "Sistemas de riego con presión insuficiente."
-    ]
+    ],
+    "detalle": "Cariló tiene una particularidad que afecta directamente al mantenimiento de bombas: gran parte de las viviendas son de uso estacional, cerradas buena parte del año entre temporada y temporada. Una bomba que estuvo meses sin funcionar suele arrancar mal aunque esté en buen estado — hay que purgar aire, revisar que no se haya secado algún sello y confirmar que la protección térmica no haya quedado disparada. Por eso conviene un chequeo preventivo antes de cada temporada alta, no solo cuando ya falló. Al ser un barrio parquizado con calles identificadas por nombre de especie forestal (no numeración tradicional), coordinamos siempre el acceso exacto por WhatsApp antes de la visita para no perder tiempo ubicando la propiedad.",
+    "coordinacion": "Escribinos por WhatsApp con el nombre de las calles (recordá que en Cariló las calles llevan nombre de árbol, no número) y una descripción del problema — un video corto del ruido de la bomba o del estado del tablero acelera mucho el diagnóstico. Coordinamos día y horario, y si la propiedad está cerrada fuera de temporada, avisanos con margen para organizar el acceso con el encargado o la inmobiliaria."
   },
   {
     "slug": "valeria-del-mar",
@@ -19,7 +21,9 @@
       "Pérdida de presión en duchas y canillas.",
       "Ruidos y vibraciones por falta de mantenimiento.",
       "Instalaciones que necesitan una presurizadora bien dimensionada."
-    ]
+    ],
+    "detalle": "Valeria del Mar tiene más población estable todo el año que otras localidades de la zona, lo que cambia el tipo de trabajo que más pedimos ahí: no tanto la puesta en marcha después de meses cerrado, sino mantenimiento de equipos que funcionan casi a diario y necesitan un chequeo periódico para no fallar en el momento menos oportuno. Al ser una zona forestada con casas más separadas entre sí que en el centro de Pinamar, también es habitual que la instalación hidráulica tenga tramos largos de cañería hasta el tanque o la bomba, algo que conviene tener en cuenta al diagnosticar una caída de presión — no siempre es la bomba, a veces es la instalación.",
+    "coordinacion": "Contanos por WhatsApp qué síntoma tiene el equipo (no arranca, perdió presión, hace ruido) y desde cuándo. Si es la puesta en marcha de la temporada, decínoslo — el chequeo es distinto al de una bomba que veníamos usando y de golpe falló. Coordinamos el horario y llevamos el diagnóstico y el presupuesto por escrito antes de tocar nada."
   },
   {
     "slug": "ostende",
@@ -30,7 +34,9 @@
       "Equipos viejos que conviene evaluar si reparar o cambiar.",
       "Baja presión en temporada de mucha demanda.",
       "Instalaciones sin mantenimiento previo a la temporada."
-    ]
+    ],
+    "detalle": "Ostende es la más chica de las localidades que atendemos y también una de las más antiguas de la zona, con bastantes construcciones de varias décadas. Ahí nos encontramos seguido con instalaciones y bombas más viejas, donde la pregunta central no es solo \"¿por qué falló?\" sino \"¿conviene repararla o ya cumplió su vida útil?\" — con equipos de mucha antigüedad, seguir cambiando repuestos puede terminar costando más que renovar la bomba por una más eficiente. Por la cercanía con Pinamar y Valeria del Mar solemos combinar visitas, así que en general podemos coordinar horarios flexibles sin perder tiempo de traslado.",
+    "coordinacion": "Escribinos por WhatsApp contándonos qué pasa con la bomba y, si podés, la antigüedad aproximada del equipo — nos ayuda a anticipar si el tema es una falla puntual o si conviene evaluar un recambio. Coordinamos la visita, diagnosticamos en el lugar y te dejamos el presupuesto antes de avanzar con cualquier reparación."
   },
   {
     "slug": "costa-esmeralda",
@@ -41,6 +47,8 @@
       "Bombas de pozo y elevación que necesitan revisión.",
       "Presión despareja entre plantas.",
       "Mantenimiento preventivo antes de la temporada."
-    ]
+    ],
+    "detalle": "Costa Esmeralda creció fuerte en los últimos años con desarrollos organizados en barrios cerrados (countries), muchos con construcciones nuevas o en obra. Eso trae dos situaciones típicas: instalaciones recién hechas que necesitan una puesta en marcha correcta y bien dimensionada desde el día uno, y casas grandes de dos plantas con varios baños donde una sola bomba mal elegida deja presión despareja entre la planta baja y la alta. Para entrar a la mayoría de los countries hay que anunciarse en la guardia con nombre y patente, así que te vamos a pedir esos datos antes de la visita para no demorar el ingreso.",
+    "coordinacion": "Escribinos por WhatsApp con la dirección completa (incluido el nombre del country o barrio cerrado) y una descripción del problema — si podés sumar un video del ruido o del tablero, mejor. Coordinamos día y horario, y te pedimos con anticipación el nombre y la patente para anunciarnos en la guardia de acceso. Hacemos el diagnóstico en el lugar y el presupuesto te lo pasamos antes de empezar cualquier trabajo."
   }
 ]

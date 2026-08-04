@@ -4,17 +4,25 @@ import site from '../../data/site.json';
 import { withBase } from '../../lib/url.js';
 const title = 'Mi bomba de agua no arranca: causas frecuentes y qué revisar';
 const description = 'Guía práctica: por qué tu bomba no arranca y qué podés revisar antes de llamar al técnico. Service oficial Rowa y Grundfos en Pinamar.';
+const datePublished = '2026-01-15';
+const dateModified = '2026-08-04';
 const jsonld = {
   '@context': 'https://schema.org',
-  '@type': 'Article',
+  '@type': 'BlogPosting',
   headline: title,
   description,
   image: new URL(withBase('/assets/van.webp'), Astro.site).toString(),
   author: { '@type': 'Organization', name: site.name },
-  publisher: { '@type': 'Organization', name: site.name },
-  datePublished: '2026-01-15',
+  publisher: {
+    '@type': 'Organization',
+    name: site.name,
+    logo: { '@type': 'ImageObject', url: new URL(withBase('/assets/logo.png'), Astro.site).toString() },
+  },
+  datePublished,
+  dateModified,
   mainEntityOfPage: new URL(withBase('/blog/mi-bomba-no-arranca/'), Astro.site).toString(),
 };
+const fechaLegible = new Date(dateModified + 'T00:00:00').toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
 <BaseLayout title={title} description={description} jsonld={jsonld}>
   <section style="padding:56px 0 24px">
@@ -22,7 +30,7 @@ const jsonld = {
       <nav style="font-size:13px;color:#888;display:flex;gap:8px"><a href={withBase('/')} style="color:#888">Inicio</a><span>/</span><span>Blog</span></nav>
       <span style="font-family:ui-monospace,monospace;font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--yellow-ink)">GUÍA PRÁCTICA</span>
       <h1 style="font-size:clamp(28px,4vw,42px);line-height:1.1;text-wrap:pretty">{title}</h1>
-      <span style="font-size:13.5px;color:#888">{site.name} · Pinamar</span>
+      <span style="font-size:13.5px;color:#888">{site.name} · Pinamar · Actualizado el {fechaLegible}</span>
     </div>
   </section>
   <section style="padding:0 0 56px">
@@ -36,6 +44,8 @@ const jsonld = {
       <p style="margin:0;text-wrap:pretty">Un zumbido sin arranque suele indicar capacitor o turbina trabada. Silencio total con electricidad confirmada apunta al automático o a la placa. Un video con el sonido nos ayuda muchísimo a orientar el diagnóstico antes de ir.</p>
       <h2 style="margin:12px 0 0;font-size:24px;color:#111">4. No la fuerces</h2>
       <p style="margin:0;text-wrap:pretty">Encender y apagar la bomba repetidamente, o dejarla funcionando en seco, puede convertir una reparación menor en un cambio de motor. Si con lo anterior no arrancó, es momento de llamar a un técnico.</p>
+      <h2 style="margin:12px 0 0;font-size:24px;color:#111">5. Cuándo sí o sí conviene llamar a un técnico</h2>
+      <p style="margin:0;text-wrap:pretty">Hay señales que conviene no seguir probando por tu cuenta: la térmica vuelve a saltar apenas la reponés (riesgo eléctrico real, no solo de la bomba), sentís olor a quemado cerca del motor, hay agua acumulada cerca de las conexiones eléctricas, o ya pasaste por los cuatro puntos anteriores y la bomba sigue sin arrancar. En esos casos, seguir insistiendo no ahorra tiempo — suele sumar un problema nuevo al que ya tenías. Un dato que ayuda mucho al diagnóstico remoto: anotá desde cuándo empezó (¿fue de golpe o venía fallando de a poco?) y si el corte de térmica pasa siempre, a veces, o solo bajo uso intenso.</p>
       <div style="background:var(--bg);border-left:4px solid var(--yellow);border-radius:0 12px 12px 0;padding:22px 24px;display:flex;flex-direction:column;gap:12px;margin-top:8px">
         <strong style="font-size:16px;color:#111">¿Tenés una bomba Rowa o Grundfos que no arranca?</strong>
         <p style="margin:0;font-size:14.5px;color:#555">Somos service oficial de ambas marcas en Pinamar y la Costa. Contanos qué revisaste y coordinamos el diagnóstico.</p>

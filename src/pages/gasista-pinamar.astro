@@ -58,6 +58,22 @@ const wa = `https://wa.me/${site.whatsapp}?text=Hola,%20necesito%20un%20gasista%
         <h2 style="font-size:26px">Por qué conviene un gasista matriculado</h2>
         <p style="margin:0;font-size:15.5px;line-height:1.65;color:#444;text-wrap:pretty">Una instalación de gas no es un trabajo para resolver "a ojo": una conexión mal hecha puede terminar en una pérdida, una intoxicación por monóxido de carbono o un incendio. Trabajar con un gasista matriculado significa que la instalación se hace cumpliendo las normas de seguridad vigentes, y que alguien responde por ese trabajo.</p>
       </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <h2 style="font-size:26px">Cómo cotizamos</h2>
+        <p style="margin:0;font-size:15.5px;line-height:1.65;color:#444;text-wrap:pretty">El presupuesto sale después del diagnóstico, no antes. Vemos la instalación, identificamos la causa del problema (o el alcance del trabajo si es una instalación nueva) y ahí te decimos qué hay que hacer y cuánto sale, antes de tocar nada. En trabajos de gas esto es especialmente importante: cotizar "a ciegas" por teléfono suele terminar en un número que cambia apenas se ve la instalación en persona — preferimos verla una vez y darte un presupuesto que se sostenga.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <h2 style="font-size:26px">Un caso habitual: reabrir la casa después de la temporada baja</h2>
+        <p style="margin:0;font-size:15.5px;line-height:1.65;color:#444;text-wrap:pretty">Una consulta frecuente es la de una casa de temporada que vuelve a abrirse después de meses cerrada. Antes de encender el calefón o la cocina conviene revisar toda la instalación: confirmar que no haya pérdidas por dilatación o humedad acumulada, chequear el estado de las conexiones y recién ahí habilitar el servicio con tranquilidad. Es un chequeo que lleva bastante menos tiempo del que la gente se imagina, y evita sustos justo cuando arranca la temporada.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <h2 style="font-size:26px">También hacemos plomería y service de bombas</h2>
+        <p style="margin:0;font-size:15.5px;line-height:1.65;color:#444;text-wrap:pretty">Si además de gas necesitás resolver una pérdida de agua, una destapación o el service de una bomba presurizadora, lo coordinamos en la misma visita cuando tiene sentido.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a href={withBase('/plomero-pinamar/')} class="pill">Plomero en Pinamar</a>
+          <a href={withBase('/reparacion-bombas-agua/')} class="pill">Reparación de bombas</a>
+        </div>
+      </div>
       <div style="display:flex;flex-direction:column;gap:10px">
         <h2 style="font-size:26px">Preguntas frecuentes</h2>
         {faqs.map(f => (<details style="padding:16px 20px"><summary style="font-size:15px"><span>{f.q}</span><span class="faq-chev">+</span></summary><p style="margin:10px 0 0;font-size:14.5px;line-height:1.6;color:#555">{f.a}</p></details>))}

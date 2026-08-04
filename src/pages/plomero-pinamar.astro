@@ -53,6 +53,22 @@ const wa = `https://wa.me/${site.whatsapp}?text=Hola,%20necesito%20un%20plomero`
           {senales.map(x => (<div style="display:flex;gap:12px;align-items:baseline;background:var(--bg);border-radius:8px;padding:14px 18px"><span style="color:var(--yellow-ink);font-weight:700;flex:none">—</span><span style="font-size:15px;line-height:1.5">{x}</span></div>))}
         </div>
       </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <h2 style="font-size:26px">Cómo cotizamos</h2>
+        <p style="margin:0;font-size:15.5px;line-height:1.65;color:#444;text-wrap:pretty">El presupuesto sale después de ver el problema, no antes. En destapaciones y pérdidas puntuales, en general damos el número apenas terminamos el diagnóstico en el lugar. En obra nueva o reformas de baño y cocina, el presupuesto depende de los materiales y el alcance que definamos juntos — te lo dejamos por escrito antes de arrancar, sin sorpresas a mitad de obra.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <h2 style="font-size:26px">Un caso habitual: una mancha de humedad sin origen claro</h2>
+        <p style="margin:0;font-size:15.5px;line-height:1.65;color:#444;text-wrap:pretty">Una de las consultas más comunes es una mancha de humedad que aparece en un techo o una pared sin que se sepa bien de dónde viene. Antes de romper para buscar la pérdida, revisamos el recorrido probable de la cañería y, cuando hace falta, probamos presión en tramos acotados para ubicar el punto exacto. Es la diferencia entre romper una pared por prueba y error, y hacer un arreglo puntual sabiendo dónde está el problema.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <h2 style="font-size:26px">También hacemos gas y service de bombas</h2>
+        <p style="margin:0;font-size:15.5px;line-height:1.65;color:#444;text-wrap:pretty">Si además necesitás una instalación o reparación de gas, o el service de una bomba presurizadora, lo coordinamos en la misma visita cuando tiene sentido.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a href={withBase('/gasista-pinamar/')} class="pill">Gasista matriculado</a>
+          <a href={withBase('/reparacion-bombas-agua/')} class="pill">Reparación de bombas</a>
+        </div>
+      </div>
       <div style="display:flex;flex-direction:column;gap:10px">
         <h2 style="font-size:26px">Preguntas frecuentes</h2>
         {faqs.map(f => (<details style="padding:16px 20px"><summary style="font-size:15px"><span>{f.q}</span><span class="faq-chev">+</span></summary><p style="margin:10px 0 0;font-size:14.5px;line-height:1.6;color:#555">{f.a}</p></details>))}
