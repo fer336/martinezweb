@@ -72,6 +72,10 @@ export function createCategoria(nombre: string): Promise<Catalogo> {
   return request('/admin/categorias', { method: 'POST', body: JSON.stringify({ nombre }) });
 }
 
+export function deleteCategoria(id: number): Promise<void> {
+  return request(`/admin/categorias/${id}`, { method: 'DELETE' });
+}
+
 export function createTrabajo(data: TrabajoInput): Promise<Trabajo> {
   return request('/admin/trabajos', { method: 'POST', body: JSON.stringify(data) });
 }
@@ -90,6 +94,10 @@ export async function uploadImage(file: File, prefix: 'trabajos' | 'hero' = 'tra
   form.append('prefix', prefix);
   const data = await request<{ url: string }>('/admin/uploads', { method: 'POST', body: form });
   return data.url;
+}
+
+export function deleteImage(url: string): Promise<void> {
+  return request('/admin/uploads', { method: 'DELETE', body: JSON.stringify({ url }) });
 }
 
 export function getConfig(): Promise<{ hero_image_url: string | null }> {

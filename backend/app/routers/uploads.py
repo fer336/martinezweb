@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, Form, HTTPException, UploadFile
 from fastapi.concurrency import run_in_threadpool
+from pydantic import BaseModel
 
 from app.schemas import UploadOut
 from app.security import require_admin
-from app.storage import ALLOWED_CONTENT_TYPES, MAX_UPLOAD_BYTES, upload_image
+from app.storage import ALLOWED_CONTENT_TYPES, MAX_UPLOAD_BYTES, delete_image_by_url, upload_image
 
 router = APIRouter(prefix="/admin/uploads", tags=["admin-uploads"], dependencies=[Depends(require_admin)])
 
@@ -24,3 +25,19 @@ async def upload(file: UploadFile, prefix: str = Form("trabajos")) -> UploadOut:
     except Exception as exc:
         raise HTTPException(status_code=502, detail=f"No se pudo subir la imagen: {exc}") from exc
     return UploadOut(url=url)
+
+
+class DeleteRequest(BaseModel):
+    url: str
+
+
+@router.delete("", status_code=204)
+async def delete_upload(data: DeleteRequest) -> None:
+    """Borrar una imagen de MinIO por su URL pública.
+
+    Safety: solo se borran objetos cuya URL pertenece a nuestro bucket público
+    y cuyo key empieza con un prefijo permitido (trabajos/ o hero/).
+    """
+    deleted = await run_in_threadpool(delete_image_by_url, data.url)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="La imagen no pertenece al bucket o no se pudo borrar")

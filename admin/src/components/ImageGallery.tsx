@@ -39,8 +39,17 @@ export default function ImageGallery({
     onChange(imagenes.map((img, i) => (i === index ? { ...img, etiqueta } : img)));
   }
 
-  function remove(index: number) {
+  async function remove(index: number) {
+    const img = imagenes[index];
     onChange(imagenes.filter((_, i) => i !== index));
+    // Best-effort: borrar la imagen de MinIO. Si falla, no bloquear la UI.
+    if (img?.url) {
+      try {
+        await api.deleteImage(img.url);
+      } catch {
+        // La imagen ya se sacó del formulario; si MinIO no responde, no es crítico.
+      }
+    }
   }
 
   function move(index: number, dir: -1 | 1) {

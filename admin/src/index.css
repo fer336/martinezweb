@@ -255,6 +255,33 @@ a {
   cursor: pointer;
 }
 
+.link-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.link-delete {
+  background: none;
+  border: none;
+  padding: 2px 0;
+  color: #c62828;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.link-delete:hover {
+  text-decoration: underline;
+}
+
+.link-delete:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
 .inline-add {
   display: flex;
   gap: 8px;

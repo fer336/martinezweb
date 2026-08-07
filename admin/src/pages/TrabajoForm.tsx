@@ -21,15 +21,18 @@ function CategoriaField({
   value,
   onChange,
   onCreated,
+  onDeleted,
 }: {
   categorias: Catalogo[];
   value: number;
   onChange: (id: number) => void;
   onCreated: (categoria: Catalogo) => void;
+  onDeleted: (id: number) => void;
 }) {
   const [adding, setAdding] = useState(false);
   const [nombre, setNombre] = useState('');
   const [creating, setCreating] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   async function handleCreate() {
@@ -46,6 +49,27 @@ function CategoriaField({
       setError(err instanceof api.ApiError ? err.message : 'No se pudo crear la sección');
     } finally {
       setCreating(false);
+    }
+  }
+
+  async function handleDelete() {
+    const categoria = categorias.find((c) => c.id === value);
+    if (!categoria) return;
+    const count = categorias.length;
+    const msg =
+      `¿Borrar la sección "${categoria.nombre}"?\n\n` +
+      'Se van a borrar TODOS los trabajos de esta sección y sus fotos.\n' +
+      'No se puede deshacer.';
+    if (!confirm(msg)) return;
+    setDeleting(true);
+    setError(null);
+    try {
+      await api.deleteCategoria(value);
+      onDeleted(value);
+    } catch (err) {
+      setError(err instanceof api.ApiError ? err.message : 'No se pudo borrar la sección');
+    } finally {
+      setDeleting(false);
     }
   }
 
@@ -82,9 +106,22 @@ function CategoriaField({
           </option>
         ))}
       </select>
-      <button type="button" className="link-add" onClick={() => setAdding(true)}>
-        + Agregar una sección nueva
-      </button>
+      <div className="link-row">
+        <button type="button" className="link-add" onClick={() => setAdding(true)}>
+          + Agregar una sección nueva
+        </button>
+        {categorias.length > 0 && (
+          <button
+            type="button"
+            className="link-delete"
+            onClick={handleDelete}
+            disabled={deleting}
+          >
+            {deleting ? 'Borrando…' : 'Borrar esta sección'}
+          </button>
+        )}
+      </div>
+      {error && <p className="error">{error}</p>}
     </label>
   );
 }
@@ -173,6 +210,15 @@ export default function TrabajoForm() {
               onCreated={(categoria) => {
                 setCategorias((prev) => [...prev, categoria].sort((a, b) => a.nombre.localeCompare(b.nombre)));
                 set('categoria_id', categoria.id);
+              }}
+              onDeleted={(deletedId) => {
+                const remaining = categorias.filter((c) => c.id !== deletedId);
+                setCategorias(remaining);
+                if (remaining.length > 0) {
+                  set('categoria_id', remaining[0].id);
+                } else {
+                  navigate('/');
+                }
               }}
             />
 

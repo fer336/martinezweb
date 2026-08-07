@@ -60,5 +60,4 @@ async def update_trabajo(trabajo_id: int, data: TrabajoWrite, db: AsyncSession =
 @admin_router.delete("/{trabajo_id}", status_code=204)
 async def delete_trabajo(trabajo_id: int, db: AsyncSession = Depends(get_db)) -> None:
     trabajo = await _get_or_404(db, trabajo_id)
-    await db.delete(trabajo)
-    await db.commit()
+    await crud.delete_trabajo_with_images(db, trabajo)
