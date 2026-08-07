@@ -3,7 +3,7 @@ version: "3.8"
 services:
   # ⚙️ Backend API (FastAPI) — cms.martinezgasplomeria.com/api/*
   backend:
-    image: ghcr.io/fer336/martinezweb-backend:1.7
+    image: ghcr.io/fer336/martinezweb-backend:1.9
     networks:
       - network_public
       - martinez-internal
@@ -35,7 +35,7 @@ services:
 
   # 🎨 Panel de administración (React) — cms.martinezgasplomeria.com
   admin:
-    image: ghcr.io/fer336/martinezweb-admin:1.7
+    image: ghcr.io/fer336/martinezweb-admin:1.9
     networks:
       - network_public
       - martinez-internal
