@@ -19,20 +19,6 @@ function badgeLabel(etiqueta: TrabajoImagen['etiqueta']): string {
 function imgAlt(etiqueta: TrabajoImagen['etiqueta'], titulo: string): string {
   return etiqueta === 'antes' ? `Antes: ${titulo}` : etiqueta === 'despues' ? `Después: ${titulo}` : titulo;
 }
-
-let trabajos: Trabajo[] = [];
-try {
-  const apiUrl = import.meta.env.PUBLIC_API_URL;
-  if (apiUrl) {
-    const res = await fetch(`${apiUrl}/trabajos`);
-    if (res.ok) {
-      const data = (await res.json()) as Trabajo[];
-      trabajos = data.filter((t) => Array.isArray(t.imagenes) && t.imagenes.length > 0);
-    }
-  }
-} catch {
-  // Si la API no responde en build time, la página queda con el mensaje de "sin trabajos" en vez de romper el build.
-}
 ---
 <BaseLayout
   title="Trabajos realizados · Martínez Gas-Plomería Pinamar"
@@ -49,25 +35,7 @@ try {
   <section>
     <div class="wrap">
       <div class="work-grid" id="work-grid">
-        {trabajos.length === 0 && (
-          <p id="work-grid-empty" style="color:#888;font-size:14.5px">Todavía no publicamos trabajos — volvé a pasar pronto.</p>
-        )}
-        {trabajos.map((t) => (
-          <div class="work-card">
-            <button type="button" class="work-gallery" data-imagenes={JSON.stringify(t.imagenes)} data-titulo={t.titulo} aria-label={`Ver fotos de ${t.titulo} en grande`}>
-              {t.imagenes.map((img, i) => (
-                <div class={i === 0 ? 'work-slide is-active' : 'work-slide'}>
-                  <img src={img.url} loading="lazy" alt={imgAlt(img.etiqueta, t.titulo)} />
-                  {img.etiqueta && <span class="badge">{badgeLabel(img.etiqueta)}</span>}
-                </div>
-              ))}
-            </button>
-            <div class="work-info">
-              <span style="font-family:ui-monospace,monospace;font-size:10.5px;font-weight:700;letter-spacing:.1em;color:var(--yellow-ink)">{t.categoria.toUpperCase()}</span>
-              <strong style="font-size:15.5px">{t.titulo}</strong>
-            </div>
-          </div>
-        ))}
+        <p id="work-grid-empty" style="color:#888;font-size:14.5px">Cargando trabajos…</p>
       </div>
     </div>
   </section>
@@ -91,7 +59,6 @@ try {
     url: string;
     etiqueta: 'antes' | 'despues' | null;
   }
-
   interface Trabajo {
     id: number;
     categoria: string;
@@ -106,6 +73,80 @@ try {
   }
   function imgAlt(etiqueta: TrabajoImagen['etiqueta'], titulo: string): string {
     return etiqueta === 'antes' ? `Antes: ${titulo}` : etiqueta === 'despues' ? `Después: ${titulo}` : titulo;
+  }
+
+  const EMPTY_MSG = 'Todavía no publicamos trabajos — volvé a pasar pronto.';
+
+  function renderCards(trabajos: Trabajo[]): HTMLElement[] {
+    const grid = document.getElementById('work-grid');
+    if (!grid) return [];
+    grid.innerHTML = '';
+    if (trabajos.length === 0) {
+      const empty = document.createElement('p');
+      empty.id = 'work-grid-empty';
+      empty.style.color = '#888';
+      empty.style.fontSize = '14.5px';
+      empty.textContent = EMPTY_MSG;
+      grid.appendChild(empty);
+      return [];
+    }
+    const cards: HTMLElement[] = [];
+    for (const t of trabajos) {
+      const card = document.createElement('div');
+      card.className = 'work-card';
+
+      const gallery = document.createElement('button');
+      gallery.type = 'button';
+      gallery.className = 'work-gallery';
+      gallery.dataset.imagenes = JSON.stringify(t.imagenes);
+      gallery.dataset.titulo = t.titulo;
+      gallery.setAttribute('aria-label', `Ver fotos de ${t.titulo} en grande`);
+
+      t.imagenes.forEach((img, i) => {
+        const slide = document.createElement('div');
+        slide.className = i === 0 ? 'work-slide is-active' : 'work-slide';
+
+        const image = document.createElement('img');
+        image.src = img.url;
+        image.loading = 'lazy';
+        image.alt = imgAlt(img.etiqueta, t.titulo);
+        slide.appendChild(image);
+
+        if (img.etiqueta) {
+          const badge = document.createElement('span');
+          badge.className = 'badge';
+          badge.textContent = badgeLabel(img.etiqueta);
+          slide.appendChild(badge);
+        }
+
+        gallery.appendChild(slide);
+      });
+
+      card.appendChild(gallery);
+
+      const info = document.createElement('div');
+      info.className = 'work-info';
+
+      const cat = document.createElement('span');
+      cat.style.fontFamily = 'ui-monospace,monospace';
+      cat.style.fontSize = '10.5px';
+      cat.style.fontWeight = '700';
+      cat.style.letterSpacing = '.1em';
+      cat.style.color = 'var(--yellow-ink)';
+      cat.textContent = t.categoria.toUpperCase();
+
+      const title = document.createElement('strong');
+      title.style.fontSize = '15.5px';
+      title.textContent = t.titulo;
+
+      info.appendChild(cat);
+      info.appendChild(title);
+      card.appendChild(info);
+
+      grid.appendChild(card);
+      cards.push(card);
+    }
+    return cards;
   }
 
   function setupGalleries() {
@@ -185,5 +226,35 @@ try {
     });
   }
 
-  setupGalleries();
+  const apiUrl = import.meta.env.PUBLIC_API_URL;
+  const grid = document.getElementById('work-grid');
+
+  if (apiUrl && grid) {
+    fetch(`${apiUrl}/trabajos`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: Trabajo[] | null) => {
+        const trabajos = (data ?? []).filter((t) => Array.isArray(t.imagenes) && t.imagenes.length > 0);
+        renderCards(trabajos);
+        setupGalleries();
+      })
+      .catch(() => {
+        if (grid) {
+          grid.innerHTML = '';
+          const empty = document.createElement('p');
+          empty.id = 'work-grid-empty';
+          empty.style.color = '#888';
+          empty.style.fontSize = '14.5px';
+          empty.textContent = EMPTY_MSG;
+          grid.appendChild(empty);
+        }
+      });
+  } else if (grid) {
+    grid.innerHTML = '';
+    const empty = document.createElement('p');
+    empty.id = 'work-grid-empty';
+    empty.style.color = '#888';
+    empty.style.fontSize = '14.5px';
+    empty.textContent = EMPTY_MSG;
+    grid.appendChild(empty);
+  }
 </script>
