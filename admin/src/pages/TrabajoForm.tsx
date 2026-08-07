@@ -55,7 +55,6 @@ function CategoriaField({
   async function handleDelete() {
     const categoria = categorias.find((c) => c.id === value);
     if (!categoria) return;
-    const count = categorias.length;
     const msg =
       `¿Borrar la sección "${categoria.nombre}"?\n\n` +
       'Se van a borrar TODOS los trabajos de esta sección y sus fotos.\n' +
