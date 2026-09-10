@@ -7,6 +7,11 @@ services:
     networks:
       - network_public
       - martinez-internal
+    environment:
+      POSTGRES_HOST: postgres_postgres-vector
+      POSTGRES_PORT: 5432
+      MINIO_HOST: minio_minio
+      MINIO_PORT: 9000
     secrets:
       - source: martinez_backend_env
         target: /run/secrets/backend.env
